@@ -27,8 +27,8 @@ MINI_BUILD = ../starlab_mini_build
 FULL_BUILD = ../starlab_full_build
 
 download: 
-	git clone https://code.google.com/p/starlab.core core
-	git clone https://code.google.com/p/starlab.surfacemesh surfacemesh
+	git clone https://github.com/ennetws/starlab.core.git core
+	git clone https://github.com/ennetws/starlab.surfacemesh.git surfacemesh
 	git clone https://code.google.com/p/starlab.examples examples
 
 reinitialize:
