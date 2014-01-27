@@ -1,6 +1,6 @@
 #starlab
 
-A cross-platform (Windows, OSX, Linux), 3D geometry processing environment.
+A lightweight, modular, and cross-platform (Windows, OSX, Linux) 3D geometry processing environment.
 
 <img src="/media/coverimageOSX.png" alt="Running ICP plugin on OSX" style="width:33%"/>
 <img src="/media/coverimageWin8.png" alt="Running on Windows 8" style="width:33%"/>
