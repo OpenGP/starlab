@@ -7,7 +7,7 @@ A lightweight, modular, and cross-platform (Windows, OSX, Linux) 3D geometry pro
 <img src="/media/coverimageUbuntu.png" alt="Running on Ubuntu" style="width:33%"/>
 
 ## Requirments
-  * Qt
+  * Qt 5
   * Modern C++ compiler
 
 ## Features
