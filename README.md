@@ -2,10 +2,9 @@
 
 A cross-platform (Windows, OSX, Linux), 3D geometry processing environment.
 
-
-<img src="http://starlab.googlecode.com/files/icp_align.png" alt="Running ICP plugin on OSX" style="width:33%"/>
-<img src="https://starlab.googlecode.com/files/coverimageWin8.png" alt="Running on Windows 8" style="width:33%"/>
-<img src="http://starlab.googlecode.com/files/coverimageUbuntu.png" alt="Running on Ubuntu" style="width:33%"/>
+![OSX](/media/coverimageOSX.png "OSX")
+![Windows 8](/media/coverimageWin8.png "Windows 8")
+![Ubuntu](/media/coverimageUbuntu.png "Ubuntu")
 
 ## Requirments
   * Qt
