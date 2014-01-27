@@ -24,5 +24,3 @@ void surfacemesh_io_off::save(SurfaceMeshModel* mesh,QString path){
     if(!success) 
         throw StarlabException("surfacemesh_io_off::save failed");
 }
-
-Q_EXPORT_PLUGIN(surfacemesh_io_off)

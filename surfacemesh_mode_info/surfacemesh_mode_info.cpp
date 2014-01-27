@@ -683,4 +683,3 @@ bool surfacemesh_mode_info::keyReleaseEvent( QKeyEvent* event )
 	return false;
 }
 
-Q_EXPORT_PLUGIN(surfacemesh_mode_info)

@@ -3,6 +3,7 @@
 
 class plugin : public SurfaceMeshRenderPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "surfacemesh_render_wireframe.plugin.starlab")
     Q_INTERFACES(RenderPlugin)
    
 public: 

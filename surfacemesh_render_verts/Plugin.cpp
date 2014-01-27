@@ -1,5 +1,4 @@
 #include "Plugin.h"
-Q_EXPORT_PLUGIN(Plugin)
 
 #include <QtOpenGL>
 #include "SurfaceMeshPlugins.h"

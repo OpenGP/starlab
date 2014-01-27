@@ -49,5 +49,3 @@ class SmoothRenderer : public SurfaceMeshRenderer{
 };
 
 Renderer* plugin::instance(){ return new SmoothRenderer(); }
-
-Q_EXPORT_PLUGIN(plugin)

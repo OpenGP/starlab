@@ -43,6 +43,3 @@ void surfacemesh_filter_normalize::applyFilter(RichParameterSet*){
     qDebug() << "New bounding box: " << printBounding(mesh()->bbox());
 }
 
-Q_EXPORT_PLUGIN(surfacemesh_filter_normalize)
-
-

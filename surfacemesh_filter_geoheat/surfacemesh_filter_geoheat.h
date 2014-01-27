@@ -10,6 +10,7 @@
 
 class surfacemesh_filter_geoheat : public SurfaceMeshFilterPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "surfacemesh_filter_geoheat.plugin.starlab")
     Q_INTERFACES(FilterPlugin)
 
 public:

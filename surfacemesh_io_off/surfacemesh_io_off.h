@@ -2,6 +2,7 @@
 #include "SurfaceMeshPlugins.h"
 class surfacemesh_io_off : public SurfaceMeshInputOutputPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "surfacemesh_io_off.plugin.starlab")
     Q_INTERFACES(InputOutputPlugin)
 
 public:

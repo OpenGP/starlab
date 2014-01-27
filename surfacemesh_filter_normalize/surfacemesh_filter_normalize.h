@@ -2,6 +2,7 @@
 #include "SurfaceMeshPlugins.h"
 class surfacemesh_filter_normalize : public SurfaceMeshFilterPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "surfacemesh_filter_normalize.plugin.starlab")
     Q_INTERFACES(FilterPlugin)
 
 public:

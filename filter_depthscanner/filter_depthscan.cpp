@@ -1,5 +1,4 @@
 #include "filter_depthscan.h"
-Q_EXPORT_PLUGIN(filter_depthscan)
 
 #include <QtOpenGL>
 #include <qgl.h>

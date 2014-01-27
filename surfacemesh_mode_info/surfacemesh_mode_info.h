@@ -9,6 +9,7 @@ using namespace SurfaceMesh;
 
 class surfacemesh_mode_info : public SurfaceMeshModePlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "surfacemesh_mode_info.plugin.starlab")
     Q_INTERFACES(ModePlugin)
 
     QIcon icon(){ return QIcon(":/images/cursor-question.png"); }

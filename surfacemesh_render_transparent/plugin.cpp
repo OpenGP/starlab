@@ -113,4 +113,3 @@ public:
 
 Renderer* plugin::instance(){ return new SortingTransparentRenderer(); }
 
-Q_EXPORT_PLUGIN(plugin)

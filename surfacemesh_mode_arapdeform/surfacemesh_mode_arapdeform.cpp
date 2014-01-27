@@ -448,4 +448,3 @@ void surfacemesh_mode_arapdeform::compute_geodesic_anchors()
     }
 }
 
-Q_EXPORT_PLUGIN(surfacemesh_mode_arapdeform)

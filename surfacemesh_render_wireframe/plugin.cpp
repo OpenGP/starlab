@@ -69,4 +69,3 @@ class WireframeRenderer : public SurfaceMeshRenderer{
 
 Renderer* plugin::instance(){ return new WireframeRenderer(); }
 
-Q_EXPORT_PLUGIN(plugin)

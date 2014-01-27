@@ -2,6 +2,7 @@
 #include "FilterPlugin.h"
 class filter_depthscan : public FilterPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "filter_depthscan.plugin.starlab")
     Q_INTERFACES(FilterPlugin)
 
 public:

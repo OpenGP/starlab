@@ -1,5 +1,4 @@
 #include "plugin.h"
-Q_EXPORT_PLUGIN(surfacemesh_render_wireframe)
 
 #include <QElapsedTimer>
 #include <qgl.h>

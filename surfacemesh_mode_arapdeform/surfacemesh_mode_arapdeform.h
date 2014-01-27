@@ -13,6 +13,7 @@ enum ANCHOR_MODE{MANUAL_POINTS, GEODESIC_DISTANCE};
 
 class surfacemesh_mode_arapdeform : public SurfaceMeshModePlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "surfacemesh_mode_arapdeform.plugin.starlab")
     Q_INTERFACES(ModePlugin)
 
 public:

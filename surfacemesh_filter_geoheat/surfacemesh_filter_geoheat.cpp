@@ -39,5 +39,3 @@ void surfacemesh_filter_geoheat::applyFilter(RichParameterSet *pars)
         drawArea()->addRenderObject(ps);
     }
 }
-
-Q_EXPORT_PLUGIN(surfacemesh_filter_geoheat)

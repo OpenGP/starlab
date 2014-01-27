@@ -107,4 +107,3 @@ class FlatwireRenderer : public SurfaceMeshRenderer{
 
 Renderer* plugin::instance(){ return new FlatwireRenderer(); }
 
-Q_EXPORT_PLUGIN(plugin)

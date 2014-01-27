@@ -170,4 +170,3 @@ void surfacemesh_io_obj::save(SurfaceMeshModel* mesh,QString path) {
     fclose(fid);
 }
 
-Q_EXPORT_PLUGIN(surfacemesh_io_obj)
