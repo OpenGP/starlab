@@ -1,5 +1,4 @@
 #include "gui_view.h"
-Q_EXPORT_PLUGIN(gui_view)
 
 void gui_view::load(){
     /// @todo re-enable them

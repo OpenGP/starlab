@@ -1,5 +1,4 @@
 #include "gui_mode.h"
-Q_EXPORT_PLUGIN(gui_mode)
 
 #include <QKeyEvent>
 #include <QApplication>

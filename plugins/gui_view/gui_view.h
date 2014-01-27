@@ -6,6 +6,7 @@
 
 class gui_view : public GuiPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "gui_view.plugin.starlab")
     Q_INTERFACES(GuiPlugin)
 
 /// @{ splits load in pieces

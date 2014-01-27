@@ -1,5 +1,4 @@
 #include "gui_render.h"
-Q_EXPORT_PLUGIN(gui_render)
 
 #include "StarlabDrawArea.h"
 #include <QDockWidget>

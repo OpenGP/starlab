@@ -9,6 +9,7 @@ class StateMachine;
 /// all the input (i.e. mouse/keyboard) actions.
 class gui_mode : public GuiPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "gui_mode.plugin.starlab")
     Q_INTERFACES(GuiPlugin)
 
 /// The gui entry that suspends a plugin

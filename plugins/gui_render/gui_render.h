@@ -9,6 +9,7 @@
 
 class gui_render : public GuiPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "gui_render.plugin.starlab")
     Q_INTERFACES(GuiPlugin)
     
 /// @{ updates GUI according to selection

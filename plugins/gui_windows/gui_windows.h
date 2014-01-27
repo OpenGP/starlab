@@ -11,6 +11,7 @@
 
 class gui_windows : public GuiPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "gui_windows.plugin.starlab")
     Q_INTERFACES(GuiPlugin)
     
 private:

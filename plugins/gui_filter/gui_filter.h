@@ -7,6 +7,7 @@
 /// all the input (i.e. mouse/keyboard) actions.
 class gui_filter : public GuiPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "gui_filter.plugin.starlab")
     Q_INTERFACES(GuiPlugin)
     
 public:    

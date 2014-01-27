@@ -1,5 +1,4 @@
 #include "gui_filemenu.h"
-Q_EXPORT_PLUGIN(gui_filemenu)
 
 #include <QFileInfo>
 #include "StarlabDrawArea.h"

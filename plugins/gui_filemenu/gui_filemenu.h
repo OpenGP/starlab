@@ -6,6 +6,7 @@
 
 class gui_filemenu : public GuiPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "gui_filemenu.plugin.starlab")
     Q_INTERFACES(GuiPlugin)
            
 private slots:

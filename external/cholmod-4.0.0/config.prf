@@ -6,8 +6,25 @@ DEFINES += CHOLMOD
 win32{
     # static library (Windows)
     INCLUDEPATH += $$PWD/include
-    LIBS += -L$$PWD/lib/win32 
-    LIBS += -llibcholmod -llibgoto_CHOLMOD -llibmetis_CHOLMOD -llibamd -llibcamd -llibcolamd -llibccolamd
+
+    !contains(QMAKE_HOST.arch, x86_64) {
+        LIBS += -L$$PWD/lib/win32
+        LIBS += -llibcholmod -llibgoto_CHOLMOD -llibmetis_CHOLMOD -llibamd -llibcamd -llibcolamd -llibccolamd
+    } else {
+        LIBS += -L$$PWD/lib/win64
+        LIBS += -llibopenblas -lSuiteSparse_config -llibcholmod -llibmetis -llibamd -llibcamd -llibcolamd -llibccolamd
+
+        # Copy dll for OpenBlas
+        EXTRA_BINFILES += $$PWD/lib/win64/libopenblas.dll
+        EXTRA_BINFILES_WIN = $${EXTRA_BINFILES}
+        EXTRA_BINFILES_WIN ~= s,/,\\,g
+        DESTDIR_WIN = $${EXECUTABLEPATH}
+        DESTDIR_WIN ~= s,/,\\,g
+        for(FILE,EXTRA_BINFILES_WIN){
+            message("Will copy file" $$FILE "to" $$DESTDIR_WIN)
+            QMAKE_POST_LINK += $$quote(cmd /c copy /y $${FILE} $${DESTDIR_WIN}$$escape_expand(\n\t))
+        }
+    }
 }
 
 mac{

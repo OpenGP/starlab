@@ -3,6 +3,7 @@
 
 class plugin : public RenderPlugin{
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "render_bbox.plugin.starlab")
     Q_INTERFACES(RenderPlugin)
 public: 
     QString name() { return "Bounding Box"; }
