@@ -3,10 +3,16 @@ INCLUDEPATH += $$PWD/include/libqhullcpp
 
 DEFINES += qh_QHpointer
 
-# PATHS
-win32:     LIBS += -L$$PWD/lib/win32
+# PATHS 
 mac:       LIBS += -L$$PWD/lib/osx64
 unix:!mac: LIBS += -L$$PWD/lib/ubuntu32
+win32{
+    !contains(QMAKE_HOST.arch, x86_64){
+        LIBS += -L$$PWD/lib/win32
+    } else {
+		LIBS += -L$$PWD/lib/win64
+	}
+}
 
 # LIBFILES
 unix | mac{
