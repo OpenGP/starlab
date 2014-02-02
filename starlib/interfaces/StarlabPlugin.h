@@ -60,7 +60,7 @@ protected:
 /// @}
         
 /// @{ Quick access to the Starlab resources
-private:
+public:
     Starlab::Document*          document();
     Starlab::Application*       application();
     Starlab::Settings*          settings();
