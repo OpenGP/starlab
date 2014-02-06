@@ -21,8 +21,10 @@ class surfacemesh_mode_info : public SurfaceMeshModePlugin{
     bool documentChanged();
 
     void decorate();
+
+    // Selection
     void drawWithNames();
-    bool postSelection(const QPoint& p);
+    bool postSelection(const QPoint &p);
     bool endSelection(const QPoint& p);
 
     void drawIndex(DrawElementType, QColor, double vt = -0.4);
@@ -51,6 +53,8 @@ class surfacemesh_mode_info : public SurfaceMeshModePlugin{
     QVector<bool> visualize;
 
 public:
+    bool mousePressEvent(QMouseEvent*);
+
     virtual bool keyReleaseEvent(QKeyEvent* event);
     virtual bool keyPressEvent (QKeyEvent* event);
     void update();

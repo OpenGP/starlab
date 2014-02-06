@@ -134,9 +134,20 @@ int surfacemesh_mode_info::correctIndex(int i)
     return i;
 }
 
+bool surfacemesh_mode_info::mousePressEvent(QMouseEvent * event)
+{
+    if(event->modifiers() & Qt::SHIFT)
+    {
+        drawArea()->select(event->pos());
+        return true;
+    }
+
+    return false;
+}
+
 bool surfacemesh_mode_info::postSelection(const QPoint& p)
 {
-	Q_UNUSED(p);
+    Q_UNUSED(p);
 
     selectedIdx = correctIndex( drawArea()->selectedName() );
 
