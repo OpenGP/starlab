@@ -654,6 +654,10 @@ namespace starlab{
 
 	static QColor qtJetColorMap(double value, double min = 0.0, double max = 1.0)
 	{
+		// bound to the limits
+		value = value > max ? max : value;
+		value = value < min ? min : value;
+
 		unsigned char rgb[3];
 		unsigned char c1=144;
 		float max4=(max-min)/4;
