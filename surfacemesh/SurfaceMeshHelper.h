@@ -111,6 +111,28 @@ public:
         }
         return varea;
     }
+
+    ScalarVertexProperty smoothVertexProperty(const std::string property, int iterations = 1){
+        ScalarVertexProperty vprop = mesh->vertex_property<Scalar>(property, 0);
+
+        for(int i = 0; i < iterations; i++)
+        {
+            std::vector<Scalar> newValues(mesh->n_vertices(), 0);
+
+            // average the values of neighbours
+            foreach( Vertex v, mesh->vertices() ){
+                foreach( Halfedge vj, mesh->onering_hedges(v) )
+                    newValues[ v.idx() ] += vprop[ mesh->to_vertex(vj) ];
+                newValues[ v.idx() ] /= mesh->valence(v);
+            }
+
+            // copy results back to property
+            foreach(Vertex v, mesh->vertices())
+                vprop[v] = newValues[v.idx()];
+        }
+
+        return vprop;
+    }
     
 public:
     class MissingPropertyException : public StarlabException{
