@@ -38,6 +38,7 @@ SUBDIRS += surfacemesh/surfacemesh_render_flatwire
 SUBDIRS += surfacemesh/surfacemesh_render_transparent
 #--- Filter Plugins [[ @TODO: FIX COMPILE ISSUES ]]
 SUBDIRS += surfacemesh/surfacemesh_filter_normalize
+SUBDIRS += surfacemesh/surfacemesh_filter_isotropic_remesher
 SUBDIRS += surfacemesh/surfacemesh_filter_geoheat
 #SUBDIRS += surfacemesh/surfacemesh_filter_ballpivoting
 #SUBDIRS += surfacemesh/surfacemesh_filter_au_skeleton
