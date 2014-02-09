@@ -952,6 +952,9 @@ namespace nanoflann
 			nanoflann::KNNResultSet<DistanceType,IndexType> resultSet(num_closest);
 			resultSet.init(out_indices, out_distances_sq);
 			this->findNeighbors(resultSet, query_point, nanoflann::SearchParams());
+
+            int nChecks_IGNORED_ = nChecks_IGNORED;
+            nChecks_IGNORED_ = (int) nChecks_IGNORED_;
 		}
 
 		/**

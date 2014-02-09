@@ -65,9 +65,9 @@ public:
 		tree->buildIndex();
 	}
 
-	size_t k_closest(Vector3 p, int k, KDResults & ret_matches)
+    size_t k_closest(Vector3 p, size_t k, KDResults & ret_matches)
 	{
-        k = k < (int)cloud.pts.size() ? k : cloud.pts.size();
+        k = k < cloud.pts.size() ? k : cloud.pts.size();
 
 		ret_matches.clear();
 		ret_matches.resize(k);
@@ -109,7 +109,7 @@ public:
         if(!match.size())
             return -1;
         else
-            return match[0].first;
+            return (int)match[0].first;
     }
 
 	inline bool has(Vector3 & p, Scalar eps_distance = 1e-7)
