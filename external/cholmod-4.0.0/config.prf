@@ -21,7 +21,7 @@ win32{
         DESTDIR_WIN = $${EXECUTABLEPATH}
         DESTDIR_WIN ~= s,/,\\,g
         for(FILE,EXTRA_BINFILES_WIN){
-            message("Will copy file" $$FILE "to" $$DESTDIR_WIN)
+            # message("Will copy file" $$FILE "to" $$DESTDIR_WIN)
             QMAKE_POST_LINK += $$quote(cmd /c copy /y $${FILE} $${DESTDIR_WIN}$$escape_expand(\n\t))
         }
     }
