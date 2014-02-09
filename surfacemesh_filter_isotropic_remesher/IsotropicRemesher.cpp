@@ -301,7 +301,7 @@ Vector3 IsotropicRemesher::findNearestPoint(SurfaceMeshModel * original_mesh, co
 
         foreach(KDResultPair match, matches)
         {
-            foreach(Halfedge h, original_mesh->onering_hedges(Vertex(match.first)))
+            foreach(Halfedge h, original_mesh->onering_hedges(Vertex((int)match.first)))
             {
                 Face f = original_mesh->face(h);
 

@@ -30,7 +30,7 @@ typedef Surface_mesh::Normal Normal;
 // helper function
 template <typename T> void read(FILE* in, T& t)
 {
-    int err = 0;
+    size_t err = 0;
     err = fread(&t, 1, sizeof(t), in);
 }
 

@@ -1,6 +1,8 @@
 #include "plugin.h"
 #include "SurfaceMeshNormalsHelper.h"
 
+#define _unused(x) ((void)x)
+
 using namespace SurfaceMesh;
 
 bool modded_read_obj(SurfaceMeshModel& mesh, const std::string& filename){
@@ -115,6 +117,7 @@ bool modded_read_obj(SurfaceMeshModel& mesh, const std::string& filename){
             if (strncmp(s, "vn ", 3) == 0) {
                 int nread = sscanf(s, "vn %f %f %f", &nx, &ny, &nz);
                 assert(nread==3);
+                _unused(nread);
 				if(ncounter >= mesh.n_vertices()) continue; // skip duplicated normals
                 normals[Vertex(ncounter)] = Vector3(nx,ny,nz);
                 // qDebug() << normals[Vertex(ncounter)];                
