@@ -304,6 +304,7 @@ Vector3 IsotropicRemesher::findNearestPoint(SurfaceMeshModel * original_mesh, co
             foreach(Halfedge h, original_mesh->onering_hedges(Vertex((int)match.first)))
             {
                 Face f = original_mesh->face(h);
+                if(!mesh()->is_valid(f)) continue;
 
                 SurfaceMeshModel::Vertex_around_face_circulator cfv_it = original_mesh->vertices( f );
 

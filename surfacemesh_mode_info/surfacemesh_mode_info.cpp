@@ -513,7 +513,11 @@ void surfacemesh_mode_info::drawItemInfo()
 			log += QString("Vertex (%1)\n").arg(v.idx());
 			log += QString("\tValence    %1\n").arg(mesh()->valence(v));
             log += QString("\tBoundry    %1\n").arg(mesh()->is_boundary(v));
-			
+
+            QStringList adjFaces;
+            foreach(Halfedge h, mesh()->onering_hedges(v)) adjFaces << QString::number(mesh()->face(h).idx());
+            log += QString("\tAdj. faces %1\n").arg( adjFaces.join(", ") );
+
 			// Properties
 			foreach(std::string pname, mesh()->vertex_properties()){
 				QString property_name = pname.c_str();
