@@ -112,14 +112,15 @@ public:
         return varea;
     }
 
-    ScalarVertexProperty smoothVertexProperty(const std::string property, int iterations = 1){
-        ScalarVertexProperty vprop = mesh->vertex_property<Scalar>(property, 0);
+	template<class Type>
+    Surface_mesh::Vertex_property<Type> smoothVertexProperty(const std::string property, int iterations = 1, Type defaultValue = Type()){
+        Surface_mesh::Vertex_property<Type> vprop = mesh->vertex_property<Type>(property, defaultValue);
 
         for(int i = 0; i < iterations; i++)
         {
-            std::vector<Scalar> newValues(mesh->n_vertices(), 0);
+            std::vector<Type> newValues(mesh->n_vertices(), defaultValue);
 
-            // average the values of neighbours
+            // average the values of neighbors
             foreach( Vertex v, mesh->vertices() ){
                 foreach( Halfedge vj, mesh->onering_hedges(v) )
                     newValues[ v.idx() ] += vprop[ mesh->to_vertex(vj) ];
