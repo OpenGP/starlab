@@ -39,13 +39,70 @@ void SurfaceMeshModel::decorateLayersWidgedItem(QTreeWidgetItem* parent){
         fileItem->setText(2, QString::number( n_faces() ));
         parent->addChild(fileItem);
     }
-    /// Show path`
+    /// Show path
     {
         QTreeWidgetItem *fileItem = new QTreeWidgetItem();
         fileItem->setText(1, "Path");
         fileItem->setText(2, this->path);
         parent->addChild(fileItem);        
     }
+}
+
+SurfaceMeshModel *SurfaceMeshModel::clone()
+{
+    std::vector<Surface_mesh::Face> selected_faces;
+    foreach(Face f, faces()) selected_faces.push_back(f);
+    return clone(selected_faces);
+}
+
+SurfaceMeshModel *SurfaceMeshModel::clone(std::vector<Surface_mesh::Vertex> subset)
+{
+    /// Remove possible duplicates
+    std::vector<Surface_mesh::Face> selected_faces;
+    std::sort( subset.begin(), subset.end() );
+    subset.erase( unique( subset.begin(), subset.end() ), subset.end() );
+
+    foreach(Vertex v, subset)
+        foreach(Halfedge h, onering_hedges(v))
+            selected_faces.push_back(face(h));
+
+    return clone(selected_faces);
+}
+
+SurfaceMeshModel *SurfaceMeshModel::clone(std::vector<Surface_mesh::Face> subset)
+{
+    /// Remove possible duplicates
+    std::sort( subset.begin(), subset.end() );
+    subset.erase( unique( subset.begin(), subset.end() ), subset.end() );
+
+    SurfaceMeshModel * m = new SurfaceMeshModel("clone.obj", this->name + "_clone");
+
+    Vector3VertexProperty points = vertex_coordinates();
+
+    QSet<int> vertSet;
+    QMap<Vertex,Vertex> vmap;
+    foreach(Face f, subset){
+        if(!is_valid(f)) continue;
+        Surface_mesh::Vertex_around_face_circulator vit = vertices(f),vend=vit;
+        do{ vertSet.insert(Vertex(vit).idx()); } while(++vit != vend);
+    }
+    foreach(int vidx, vertSet){
+        vmap[Vertex(vidx)] = Vertex(vmap.size());
+        m->add_vertex( points[Vertex(vidx)] );
+    }
+    foreach(Face f, subset){
+        if(!is_valid(f)) continue;
+        std::vector<Vertex> pnts;
+        Surface_mesh::Vertex_around_face_circulator vit = vertices(f),vend=vit;
+        do{ pnts.push_back(vmap[vit]); } while(++vit != vend);
+        m->add_face(pnts);
+    }
+
+    m->update_face_normals();
+    m->update_vertex_normals();
+    m->updateBoundingBox();
+
+    return m;
 }
 
 void SurfaceMeshModel::updateBoundingBox(){

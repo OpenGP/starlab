@@ -107,6 +107,12 @@ public:
     void decorateLayersWidgedItem(QTreeWidgetItem* parent);
 /// @}
 
+/// @{ Cloning operations
+    SurfaceMeshModel * clone();
+    SurfaceMeshModel * clone(std::vector<Surface_mesh::Vertex> subset);
+    SurfaceMeshModel * clone(std::vector<Surface_mesh::Face> subset);
+/// @}
+
 /// @{ Qt foreach helpers
 ///    Example: foreach(Vertex v, m->validVertices()){ ... }
 public:

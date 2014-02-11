@@ -98,7 +98,7 @@ void filter_depthscan::applyFilter(RichParameterSet* pars){
             Vector3 dir(_dir[0],_dir[1],_dir[2]);
             dir.normalize(); ///< just to be sure
             int isectHit = -1;
-            Eigen::Vector3d ipoint = octree.closestIntersectionPoint( Ray(orig, dir), &isectHit );
+            Eigen::Vector3d ipoint = octree.closestIntersectionPoint( Ray(orig, dir), &isectHit, false );
             
             X(i,j).xyz[0] = std::numeric_limits<Scalar>::quiet_NaN();
             if(isectHit>=0){
