@@ -108,6 +108,21 @@ public:
         return isetpoint;
     }
 
+    bool isIntersectsWithRay(const Ray & ray, double * distance)
+    {
+		int faceIndex = -1;
+		if(distance) *distance = DBL_MAX;
+
+		Eigen::Vector3d p = closestIntersectionPoint(ray, &faceIndex);
+
+		if(faceIndex >= 0){
+			if(distance) *distance = (p-ray.origin).norm();
+			return true;
+		}
+
+		return false;
+    }
+
     IndexSet intersectSphere( const Eigen::Vector3d& sphere_center, double radius )
     {
         IndexSet tris;
