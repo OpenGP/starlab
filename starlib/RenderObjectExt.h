@@ -652,30 +652,34 @@ namespace starlab{
 		return QColor(rgb[0],rgb[1],rgb[2]);
 	}
 
-	static QColor qtJetColorMap(double value, double min = 0.0, double max = 1.0)
+	/*
+	   Return a RGB colour value given a scalar v in the range [vmin,vmax]
+	   In this case each colour component ranges from 0 (no contribution) to
+	   1 (fully saturated), modifications for other ranges is trivial.
+	   The colour is clipped at the end of the scales if v is outside
+	   the range [vmin,vmax] - from StackOverflow/7706339
+	*/
+	QColor qtJetColor(double v, double vmin = 0,double vmax = 1)
 	{
-		// bound to the limits
-		value = value > max ? max : value;
-		value = value < min ? min : value;
-
-		unsigned char rgb[3];
-		unsigned char c1=144;
-		float max4=(max-min)/4;
-		value-=min;
-		if(value==HUGE_VAL)
-		{rgb[0]=rgb[1]=rgb[2]=255;}
-		else if(value<0)
-		{rgb[0]=rgb[1]=rgb[2]=0;}
-		else if(value<max4)
-		{rgb[0]=0;rgb[1]=0;rgb[2]=c1+(unsigned char)((255-c1)*value/max4);}
-		else if(value<2*max4)
-		{rgb[0]=0;rgb[1]=(unsigned char)(255*(value-max4)/max4);rgb[2]=255;}
-		else if(value<3*max4)
-		{rgb[0]=(unsigned char)(255*(value-2*max4)/max4);rgb[1]=255;rgb[2]=255-rgb[0];}
-		else if(value<max)
-		{rgb[0]=255;rgb[1]=(unsigned char)(255-255*(value-3*max4)/max4);rgb[2]=0;}
-		else {rgb[0]=255;rgb[1]=rgb[2]=0;}
-		return QColor(rgb[0],rgb[1],rgb[2]);
+	   double dv;
+	   if (v < vmin) v = vmin;
+	   if (v > vmax) v = vmax;
+	   dv = vmax - vmin;
+	   double r = 1, g = 1, b = 1;
+	   if (v < (vmin + 0.25 * dv)) {
+		  r = 0;
+		  g = 4 * (v - vmin) / dv;
+	   } else if (v < (vmin + 0.5 * dv)) {
+		  r = 0;
+		  b = 1 + 4 * (vmin + 0.25 * dv - v) / dv;
+	   } else if (v < (vmin + 0.75 * dv)) {
+		  r = 4 * (v - vmin - 0.5 * dv) / dv;
+		  b = 0;
+	   } else {
+		  g = 1 + 4 * (vmin + 0.75 * dv - v) / dv;
+		  b = 0;
+	   }
+	   return QColor::fromRgbF(r,g,b);
 	}
 
 	static std::vector<double> randomColor()
