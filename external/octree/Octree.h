@@ -60,7 +60,7 @@ public:
         return closestIntersectionPoint(_ray, faceIndex);
     }
     
-    Eigen::Vector3d closestIntersectionPoint( const Ray & ray, int * faceIndex )
+    Eigen::Vector3d closestIntersectionPoint( const Ray & ray, int * faceIndex, bool isRobsut = true )
     {
         HitResult res, best_res;
         Eigen::Vector3d isetpoint(0.0,0.0,0.0);
@@ -88,16 +88,19 @@ public:
             }
         }
 
-        // Slower, more robust tests
-        if(!best_res.hit){
-            foreach( int i, intersectRay( ray, 0.01, false ) ){
-                rayTriangleIntersectionTest(SurfaceMesh::Model::Face(i), ray, res, false);
-                if(res.hit){
-                    if (res.distance < minDistance){
-                        minDistance = res.distance;
-                        isetpoint = ray.origin + (ray.direction * res.distance);
-                        if(faceIndex) *faceIndex = i;
-                        best_res = res;
+        if( isRobsut )
+        {
+            // Slower, more robust tests
+            if(!best_res.hit){
+                foreach( int i, intersectRay( ray, 0.01, false ) ){
+                    rayTriangleIntersectionTest(SurfaceMesh::Model::Face(i), ray, res, false);
+                    if(res.hit){
+                        if (res.distance < minDistance){
+                            minDistance = res.distance;
+                            isetpoint = ray.origin + (ray.direction * res.distance);
+                            if(faceIndex) *faceIndex = i;
+                            best_res = res;
+                        }
                     }
                 }
             }
