@@ -40,7 +40,10 @@ public:
     typedef Vector3            Point;               ///< Point type  (used by original Surface_mesh)
     typedef Vector3            Normal;              ///< Normal type (used by original Surface_mesh)
     typedef Vector3            Texture_coordinate;  ///< Texture coordinate type
-    
+
+    /// Special friend classes
+    friend class ModifiedButterfly;
+
 public: //------------------------------------------------------ topology types
 
 

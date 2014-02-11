@@ -17,6 +17,9 @@ SUBDIRS += surfacemesh_render_transparent
 
 # Filter Plugins [[ @TODO: FIX COMPILE ISSUES ]]
 SUBDIRS += surfacemesh_filter_normalize
+SUBDIRS += surfacemesh_filter_laplacian_smoothing
+SUBDIRS += surfacemesh_filter_simplification
+SUBDIRS += surfacemesh_filter_butterfly_subdivision
 SUBDIRS += surfacemesh_filter_isotropic_remesher
 SUBDIRS += surfacemesh_filter_geoheat
 #SUBDIRS += surfacemesh_filter_ballpivoting
