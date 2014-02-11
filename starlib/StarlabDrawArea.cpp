@@ -17,7 +17,11 @@ DrawArea* DrawArea::_staticInstance = NULL;
 
 void DrawArea::update(){
     // qDebug() << "StarlabDrawArea::update()";
-    
+
+    /// Don't update on a busy document
+    if(document()->isBusy())
+        return;
+
     /// @internal Initialization can act on busy document
     /// Update the metadata needed by the renderer
     /// e.g. stick data in vertex buffer.. etc..
@@ -32,10 +36,6 @@ void DrawArea::update(){
             model->renderer()->init();
         }
     }
-    
-    /// Don't update on a busy document
-    if(document()->isBusy()) 
-        return;
 
     /// This will force a "paint" of the GL window
     updateGL();

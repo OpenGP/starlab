@@ -7,9 +7,9 @@
 
 #include "QCommandLine.h"
 
-const QCommandLineConfigEntry QCommandLine::helpEntry = { QCommandLine::Switch, QLatin1Char('h'), QLatin1String("help"), tr("Display this help and exit"), QCommandLine::Optional };
+const QCommandLineConfigEntry QCommandLine::helpEntry = { QCommandLine::Switch, QLatin1Char('h'), QLatin1String("help"), "Display this help and exit", QCommandLine::Optional };
 
-const QCommandLineConfigEntry QCommandLine::versionEntry = { QCommandLine::Switch, QLatin1Char('V'), QLatin1String("version"), tr("Display version and exit"), QCommandLine::Optional };
+const QCommandLineConfigEntry QCommandLine::versionEntry = { QCommandLine::Switch, QLatin1Char('V'), QLatin1String("version"), "Display version and exit", QCommandLine::Optional };
 
 QCommandLine::QCommandLine(QObject * parent)
     : QObject(parent), d(new QCommandLinePrivate) {

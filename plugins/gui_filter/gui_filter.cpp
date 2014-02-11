@@ -15,12 +15,29 @@ void gui_filter::load(){
     /// Fill the menu with plugin names and make connections
     foreach(FilterPlugin* plugin, pluginManager()->filterPlugins()){
         QAction* action = plugin->action();
-        mainWindow()->filterMenu->addAction(action);
+
+        QString pluginName = plugin->name();
+        QMenu * assignedMenu = mainWindow()->filterMenu;
+
+        // Check for categories
+        if(pluginName.contains("|")){
+            QStringList pluginNames = pluginName.split("|");
+
+            action->setText( pluginNames.back() );
+
+            // Try to locate exciting submenu
+            QString catName = pluginNames.front();
+            QMenu * m = assignedMenu->findChild<QMenu*>( catName );
+            if(!m) m = mainWindow()->filterMenu->addMenu(catName);
+
+            assignedMenu = m;
+        }
+
+        assignedMenu->addAction(action);
         
         // Action refers to this filter, so we can retrieve it later
         // QAction* action = new QAction(plugin->name(),plugin);
-        
-        
+
         /// Does the filter have an icon? Add it to the toolbar
         /// @todo add functionality to ModelFilter
         if(!action->icon().isNull())
