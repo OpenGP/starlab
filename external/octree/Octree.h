@@ -60,7 +60,7 @@ public:
         return closestIntersectionPoint(_ray, faceIndex);
     }
     
-    Eigen::Vector3d closestIntersectionPoint( const Ray & ray, int * faceIndex, bool isRobsut = true )
+    Eigen::Vector3d closestIntersectionPoint( const Ray & ray, int * faceIndex, bool isRobsut = false )
     {
         HitResult res, best_res;
         Eigen::Vector3d isetpoint(0.0,0.0,0.0);
