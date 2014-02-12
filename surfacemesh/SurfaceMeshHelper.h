@@ -85,7 +85,7 @@ public:
         // Vertex v0,v1,v2;
         foreach(Vertex v, mesh->vertices())
             varea[v] = 0.0;
-        throw StarlabException("something");        
+        throw StarlabException("'computeVertexBarycentricArea' not implemented yet");
         return varea;
     }
 

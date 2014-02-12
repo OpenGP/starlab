@@ -8,6 +8,10 @@
     #define VABSMEANCURV    "v:absmeancurv"
 /// @}
 
+#ifdef WIN32
+namespace std{  inline bool isnan(double x); } // {return _isnan(x);} define it once somewhere..
+#endif
+
 /// See: Dyn et al. "Optimizing 3D Triangulations Using Discrete Curvature Analysis" 
 /// Assumption: manifold triangular mesh
 class CurvatureEstimationHelper : public virtual SurfaceMeshHelper{
@@ -54,10 +58,10 @@ public:
             Vector3 f1n = -fnormal[ mesh->face( h1 ) ];
             Scalar dotp = qMax(qMin(dot(f0n,f1n),1.0),-1.0);
             // qDebug() << dotp << acos(dotp)*180/PI;
-            Scalar sign = (dot(w1-w0,f0n)>=0) ? +1:-1;
+            Scalar sign = ((w1-w0).dot(f0n)>=0) ? +1:-1;
             eDihedral[e] = sign*acos(dotp);
             // qDebug() << sign << edihedral[e];
-            Q_ASSERT(!isnan(eDihedral[e]));
+            Q_ASSERT(!std::isnan(eDihedral[e]));
         }
         return eDihedral;
     }
@@ -90,17 +94,17 @@ public:
         foreach(Vertex v, mesh->vertices()){
             Scalar AH = vAbsoluteMeanCurvature[v];
             Scalar G  = vGaussianCurvature[v];
-            Q_ASSERT(!isnan(AH));
-            Q_ASSERT(!isnan(G));
+            Q_ASSERT(!std::isnan(AH));
+            Q_ASSERT(!std::isnan(G));
             Scalar sqrtrmarg=AH*AH-G;
             Scalar sqrtrm = (sqrtrmarg>=0)?sqrt(sqrtrmarg):0.0f;
-            Scalar abskmin = fabs(AH-sqrtrm);
-            Scalar abskmax = fabs(AH+sqrtrm);
+            Scalar abskmin = std::abs(AH-sqrtrm);
+            Scalar abskmax = std::abs(AH+sqrtrm);
             vAnisotropy[v] = abskmin / abskmax;
             // qDebug() << "AH" << AH << "G" << G;
             // qDebug() << "absmin/absmax = anisotropy" << abskmin << "/"<< abskmax << "=" << anisotropy[v];
         }
-        Q_ASSERT(vAnisotropy>=0 && vAnisotropy<=1);
+        //Q_ASSERT(vAnisotropy>=0 && vAnisotropy<=1);
         return vAnisotropy;
     }
     
@@ -112,9 +116,9 @@ protected:
         Scalar retval = 2*PI;
         Point pcurr = points[v];
         foreach(Halfedge h, mesh->onering_hedges(v)){
-            Vector3 vprev = (points[mesh->to_vertex(h)]-pcurr).normalize();
-            Vector3 vnext = (points[mesh->to_vertex(mesh->next_halfedge(h))]-pcurr).normalize();
-            Scalar dotp = qMax( qMin( dot(vprev,vnext),1.0 ), -1.0 );
+            Vector3 vprev = (points[mesh->to_vertex(h)]-pcurr).normalized();
+            Vector3 vnext = (points[mesh->to_vertex(mesh->next_halfedge(h))]-pcurr).normalized();
+            Scalar dotp = qMax( qMin( vprev.dot(vnext),1.0 ), -1.0 );
             retval -= acos( dotp );
         }
         /// Area normalization
@@ -135,7 +139,7 @@ protected:
         /// Area normalization
         meank /= 4;
         meank /= varea[v];
-        Q_ASSERT(!isnan(meank));
+        Q_ASSERT(!std::isnan(meank));
         return meank;
     }
     

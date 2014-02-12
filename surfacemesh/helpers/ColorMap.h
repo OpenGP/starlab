@@ -7,8 +7,8 @@
 #include <cmath>
 
 #ifdef WIN32
-    namespace std{  bool isnan(double x){ return _isnan(x); }
-                    bool isinf(double x){ return _finite(x); } }
+namespace std{  inline bool isnan(double x){ return _isnan(x); }
+                inline bool isinf(double x){ return _finite(x); } }
 #endif
 
 // Temporary solution
@@ -25,7 +25,7 @@ public:
     virtual void init(Scalar min, Scalar max){
         this->min = min;
         this->max = max;
-        validRange = ( fabs(max-min) > std::numeric_limits<Scalar>::min() );
+        validRange = ( std::abs(max-min) > std::numeric_limits<Scalar>::min() );
     }
     virtual Color color(Scalar /*val*/) = 0;
 };
