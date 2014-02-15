@@ -124,12 +124,15 @@ namespace starlab{
 		QVector< QPair<QVector3,QVector3> > lines;
 		QVector< QColor > lines_colors;
 	public:
-		LineSegments():RenderObject::Base(1, Qt::black){}
+		LineSegments():RenderObject::Base(1, Qt::black){ translation = Eigen::Vector3d(0,0,0); }
 
 		void draw(QGLWidget &widget){ this->draw(); Q_UNUSED(widget) }
 
 		void draw(){
 			glDisable(GL_LIGHTING);
+
+			glPushMatrix();
+			glTranslated(translation[0],translation[1],translation[2]);
 
 			glLineWidth(_size);
 			glBegin(GL_LINES);
@@ -148,6 +151,7 @@ namespace starlab{
 			}
 			glEnd();
 
+			glPopMatrix();
 			glEnable(GL_LIGHTING);
 		}
 
@@ -156,10 +160,13 @@ namespace starlab{
 			lines_colors.push_back(c);
 		}
 
-		void addLines()
-		{
-
+		void addLines(std::vector<Eigen::Vector3d> points, const QColor& c = Qt::blue){
+			for(size_t i = 0; i < points.size() - 1; i++){
+				addLine(points[i], points[i+1], c);
+			}
 		}
+
+		Eigen::Vector3d translation;
 	};
 
 	class PointSoup : public RenderObject::Base{
@@ -334,7 +341,7 @@ namespace starlab{
 			{
 				Eigen::Vector3d center = planes[i].first;
 				glv(center);
-				glv(Vector3(center + ((Eigen::Vector3d)n[i] * 0.2 * scale)));
+                glv(Eigen::Vector3d(center + ((Eigen::Vector3d)n[i] * 0.2 * scale)));
 			}
 			glEnd();
 
@@ -639,7 +646,7 @@ namespace starlab{
 	}
 
 	// Coloring functions
-	static QColor qtColdColor(double value, double min = 0.0, double max = 1.0){
+    static inline  QColor qtColdColor(double value, double min = 0.0, double max = 1.0){
 		unsigned char rgb[3];
 		value-=min;
 		if(value==HUGE_VAL)
@@ -659,7 +666,7 @@ namespace starlab{
 	   The colour is clipped at the end of the scales if v is outside
 	   the range [vmin,vmax] - from StackOverflow/7706339
 	*/
-	QColor qtJetColor(double v, double vmin = 0,double vmax = 1)
+    static inline QColor qtJetColor(double v, double vmin = 0,double vmax = 1)
 	{
 	   double dv;
 	   if (v < vmin) v = vmin;
@@ -682,7 +689,7 @@ namespace starlab{
 	   return QColor::fromRgbF(r,g,b);
 	}
 
-	static std::vector<double> randomColor()
+    static inline std::vector<double> randomColor()
 	{
 		std::vector<double> color;
 
@@ -698,7 +705,7 @@ namespace starlab{
 		return color;
 	}
 
-	static std::vector< std::vector<double> > randomColors( int count )
+    static inline std::vector< std::vector<double> > randomColors( int count )
 	{
 		srand(time(NULL));
 
@@ -708,13 +715,13 @@ namespace starlab{
 		return colors;
 	}
 
-	static QColor qRandomColor()
+    static inline QColor qRandomColor()
 	{
 		std::vector<double> c = randomColor();
 		return QColor::fromRgbF( c[0], c[1], c[2], c[3] );
 	}
 
-	static QColor qRandomColor2(double saturation = 0.5, double val = 0.95)
+    static inline QColor qRandomColor2(double saturation = 0.5, double val = 0.95)
 	{
 		double golden_ratio_conjugate = 0.618033988749895;
 		double h = ((double)rand() / RAND_MAX);
@@ -724,7 +731,7 @@ namespace starlab{
 	}
 
 	// for mid = 0, colors are centred around Red
-	static QColor qRandomColor3(double mid = 0, double range = 0.5, double saturation = 1.0, double val = 1.0)
+    static inline QColor qRandomColor3(double mid = 0, double range = 0.5, double saturation = 1.0, double val = 1.0)
 	{
 		// Bound checks
 		mid = qMax(0.0, qMin(1.0, mid));
