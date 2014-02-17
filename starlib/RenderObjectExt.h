@@ -124,7 +124,7 @@ namespace starlab{
 		QVector< QPair<QVector3,QVector3> > lines;
 		QVector< QColor > lines_colors;
 	public:
-		LineSegments():RenderObject::Base(1, Qt::black){ translation = Eigen::Vector3d(0,0,0); }
+		LineSegments(float size = 1.0f):RenderObject::Base(size, Qt::black){ translation = Eigen::Vector3d(0,0,0); }
 
 		void draw(QGLWidget &widget){ this->draw(); Q_UNUSED(widget) }
 
