@@ -1,7 +1,8 @@
 help:
 	@echo "This has only been tested for MACOSX!!!!!"
 	@echo "- help 			this help"
-	@echo "- reinitialize	***deletes*** all sub-repo folders and the .user files"
+	@echo "- initialize             git-clones the starlab (sub-)repositories
+	@echo "- reinitialize	        ***deletes*** all sub-repo folders and the .user files"
 	@echo "- fresh			reinitialize + download + open"
 	@echo "- download 		downloads all sub-repositories"
 	@echo "- open	 		opens the starlab_mini.pro in QtCreator"
