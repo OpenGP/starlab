@@ -9,7 +9,7 @@ struct SamplePoint{
     double weight;
     int flag;
     SamplePoint(const Eigen::Vector3d& position = Eigen::Vector3d(), const Eigen::Vector3d& normal = Eigen::Vector3d(),
-        double Weight = 0.0, int face_index = -1.0, double U = 0.0, double V = 0.0, int flags = 0){
+        int face_index = -1.0, double U = 0.0, double V = 0.0, double Weight = 0.0, int flags = 0){
         pos = position;
         n = normal;
         weight = Weight;
@@ -70,7 +70,7 @@ public:
 
     public:
         static QVector<Vector3> FaceSamples(SurfaceMeshModel * m, int sampleNum,
-					QVector<Vector3> & samplesNormals, double * avgSpacing)
+					QVector<Vector3> & samplesNormals, double * avgSpacing, QVector<SamplePoint> * fullSamples = NULL)
 		{
 			QVector<Vector3> samples;
 
@@ -165,6 +165,10 @@ public:
 								double dist = (samples.back() - samples[samples.size()-2]).norm();
 								if(dist != 0.0)	*avgSpacing = dist;
 							}
+
+							// Detailed record of samples
+							if( fullSamples )
+								fullSamples->push_back(SamplePoint(p, fnormals[f], f.idx(), coord[0], coord[1]));
 						}
 					}
 				}
