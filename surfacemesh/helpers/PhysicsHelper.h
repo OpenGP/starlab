@@ -27,7 +27,9 @@ public:
 		return volume;
 	}
 
-	SurfaceMesh::Vector3 centerOfMass( Eigen::Matrix3d & inertiaTensor = Eigen::Matrix3d(), Scalar density = 1.0 ){
+	SurfaceMesh::Vector3 centerOfMass( Eigen::Matrix3d & inertiaTensor = Eigen::Matrix3d(), 
+			Scalar density = 1.0, Scalar * meshMass = NULL )
+	{
 		Scalar T0;
 		Vector3 T1, T2, TP, r;
 		int X = 0, Y = 1, Z = 2;
@@ -58,6 +60,8 @@ public:
 		J(Y,Z) = J(Z,Y) += mass * r[Y] * r[Z]; 
 		J(Z,X) = J(X,Z) += mass * r[Z] * r[X]; 
 		inertiaTensor = J;
+
+		if(meshMass) *meshMass = mass;
 
 		return r;
 	}
