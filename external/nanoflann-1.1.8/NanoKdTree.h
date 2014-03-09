@@ -77,7 +77,7 @@ public:
 
 		tree->knnSearch(&p[0], k, &ret_index[0], &out_dist[0]);
 
-		for(int i = 0; i < k; i++)
+		for(size_t i = 0; i < k; i++)
 			ret_matches[i] = std::make_pair(ret_index[i], out_dist[i]);
 
 		return k;
