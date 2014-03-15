@@ -130,7 +130,7 @@ inline void glColor(const Eigen::Vector4f&  _v)  { glColor4fv(_v.data()); }
 inline void glColor(const Eigen::Vector4d&  _v)  { glColor4dv(_v.data()); }
 
 /// Wrapper: glColor for Eigen::Vector3d
-inline void glColor(const Eigen::Vector3d&  _v)  { glColor4dv(_v.data()); }
+inline void glColor(const Eigen::Vector3d&  _v)  { glColor3dv(_v.data()); }
 
 /// Wrapper: glColor for Vec4uc
 //inline void glColor(const Vec4uc&  _v) { glColor4ubv(_v.data()); }
