@@ -178,18 +178,18 @@ defineTest(StarlabTemplate){
 
     # OpenMP
     win32{
-        QMAKE_CXXFLAGS += /openmp
-        QMAKE_CXXFLAGS += /MP
+        QMAKE_CXXFLAGS *= /openmp
+        QMAKE_CXXFLAGS *= /MP
     }
     unix:!mac{
-        QMAKE_CXXFLAGS += -fopenmp
+        QMAKE_CXXFLAGS *= -fopenmp
         LIBS += -lgomp
     }
 
     # Windows specific warnings + compilation issues
     win32{
-        DEFINES += _CRT_SECURE_NO_WARNINGS
-        DEFINES += NOMINMAX
+        DEFINES *= _CRT_SECURE_NO_WARNINGS
+        DEFINES *= NOMINMAX
     }
 
     # @internal because we are inside a function we need to "export" variables
