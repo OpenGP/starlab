@@ -16,6 +16,9 @@ win32{
 
         # Copy dll for OpenBlas
         EXTRA_BINFILES += $$PWD/lib/win64/libopenblas.dll
+		EXTRA_BINFILES += $$PWD/lib/win64/libgfortran-3.dll
+		EXTRA_BINFILES += $$PWD/lib/win64/libquadmath-0.dll
+		EXTRA_BINFILES += $$PWD/lib/win64/libgcc_s_sjlj-1.dll
         EXTRA_BINFILES_WIN = $${EXTRA_BINFILES}
         EXTRA_BINFILES_WIN ~= s,/,\\,g
         DESTDIR_WIN = $${EXECUTABLEPATH}
