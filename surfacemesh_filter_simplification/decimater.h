@@ -91,7 +91,7 @@ private:
         return det;
     }
 
-    double calculate_edge_error(Surface_mesh::Edge edge, Point & p = Point(0,0,0))
+    double calculate_edge_error(Surface_mesh::Edge edge, Point & p)
     {
         double min_error;
         QuadricMatrix q_bar;
@@ -106,7 +106,7 @@ private:
         /* test if q_bar is symmetric */
         if (q_bar(1) != q_bar(4) || q_bar(2) != q_bar(8) || q_bar(6) != q_bar(9) ||
             q_bar(3) != q_bar(12) || q_bar(7) != q_bar(13) || q_bar(11) != q_bar(14)){
-            return DBL_MAX;
+            return std::numeric_limits<double>::max();
         }
 
         q_delta <<  q_bar(0), q_bar(1),  q_bar(2),  q_bar(3),
@@ -150,7 +150,10 @@ private:
         // Populate errors on edges
         Surface_mesh::Edge_iterator edgesEnd = mesh->edges_end();
         for (  Surface_mesh::Edge_iterator eit = mesh->edges_begin(); eit != edgesEnd; ++eit)
-            errors[eit] = calculate_edge_error(eit);
+        {
+            Point p(0,0,0);
+            errors[eit] = calculate_edge_error(eit,p);
+        }
     }
 
     inline double vertex_error(QuadricMatrix q, Point p)
@@ -217,7 +220,9 @@ private:
             for (Surface_mesh::Halfedge_around_vertex_circulator h = mesh->halfedges(v1); ; )
             {
                 Surface_mesh::Edge e = mesh->edge(h);
-                errors[e] = calculate_edge_error(e);
+
+                Point pi(0,0,0);
+                errors[e] = calculate_edge_error(e, pi);
 
                 ++h; if(h == hend) break;
             }
