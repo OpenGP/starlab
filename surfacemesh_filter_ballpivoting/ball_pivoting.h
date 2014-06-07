@@ -6,6 +6,8 @@
 #include "NanoKdTree.h"
 #include "SurfaceMeshHelper.h"
 
+#pragma warning( disable: 4267 )
+
 class BallPivoting{
 	
 	/* Ball pivoting surface reconsturction algorithm:
@@ -15,7 +17,7 @@ class BallPivoting{
 	4) usedBit flag is used to select the points in the mesh already processed */   
 
 	struct SimpleFace{ 
-		int v[3];
+        int v[3];
 		int & operator[](const int& vi) { return v[vi]; } 
 		int & operator()(const int& vi) { return v[vi]; }
 		int & V(int k){ return v[k]; }
@@ -113,7 +115,7 @@ public:
 			  radius = maxDist;
 		  }
 		  if(radius == 0)
-			  radius = sqrt( pow(mesh->bbox().size().length(), 2) / this->mesh->n_vertices() );
+              radius = sqrt( pow(mesh->bbox().sizes().norm(), 2) / this->mesh->n_vertices() );
 
 		  min_edge *= radius;
 		  max_edge *= radius;    
@@ -142,7 +144,7 @@ public:
 protected:
 
 	bool SeedFace() {
-		int v[3];
+        size_t v[3];
 		bool success = Seed(v[0], v[1], v[2]);
 		if(!success) return false;
 
@@ -154,9 +156,9 @@ protected:
 		std::list<FrontEdge>::iterator first;
 
 		for(int i = 0; i < 3; i++) {
-			int v0 = v[i];
-			int v1 = v[((i+1)%3)];
-			int v2 = v[((i+2)%3)];
+            size_t v0 = v[i];
+            size_t v1 = v[((i+1)%3)];
+            size_t v2 = v[((i+2)%3)];
 
 			border[Vertex(v0)] = true;
 
@@ -179,7 +181,7 @@ protected:
 		return true;
 	}
 
-	bool Seed(int &v0, int &v1, int &v2) 
+    bool Seed(size_t &v0, size_t &v1, size_t &v2)
 	{               
 		while(++last_seed < (int)(this->mesh->n_vertices())) 
 		{
@@ -190,14 +192,14 @@ protected:
 
 			// get a sphere of neighbors
 			KDResults matches;
-			int n = tree->ball_search(points[seed], 2*radius, matches);
+            size_t n = tree->ball_search(points[seed], 2*radius, matches);
 
 			if(n < 3)  
 				continue;
 
 			bool success = true;
 			//find the closest visited or boundary
-			for(int i = 0; i < n; i++) {         
+            for(size_t i = 0; i < n; i++) {
 				Vertex v(matches[i].first);
 				if(visited[v]) {        
 					success = false;
@@ -211,18 +213,18 @@ protected:
 
 			//find a triplet that does not contains any other point
 			Vector3 center;
-			for(int i = 0; i < n; i++) {
+            for(size_t i = 0; i < n; i++) {
 				vv0 = Vertex(matches[i].first);
 				Vector3 p0 = points[vv0];        
 
-				for(int k = i+1; k < n; k++) {
+                for(size_t k = i+1; k < n; k++) {
 					vv1 = Vertex(matches[k].first);          
 					Vector3 p1 = points[vv1];      
 
 					Scalar d2 = (p1 - p0).norm();    
 					if(d2 < min_edge || d2 > max_edge) continue;
 
-					for(int j = k+1; j < n; j++) {
+                    for(size_t j = k+1; j < n; j++) {
 						vv2 = Vertex(matches[j].first);
 						Vector3 p2 = points[vv2];     
 
@@ -231,9 +233,9 @@ protected:
 						Scalar d0 = (p2 - p1).norm();
 						if(d0 < min_edge || d0 > max_edge) continue;
 
-						Vector3 normal = cross((p1 - p0),(p2 - p0));
+                        Vector3 normal = cross(Vector3(p1 - p0),Vector3(p2 - p0));
 
-						if(dot(normal, p0 - baricenter) < 0) continue;
+                        if(dot(normal, Vector3(p0 - baricenter)) < 0) continue;
 
 						if(!FindSphere(p0, p1, p2, center)) {
 							continue;
@@ -252,7 +254,7 @@ protected:
 						}
 
 						//check on the other side there is not a surface
-						Vector3 opposite = center + normal * ( (dot(center - p0,(normal)) * 2) / normal.sqrnorm() );
+                        Vector3 opposite = center + normal * ( (dot(Vector3(center - p0),(normal)) * 2) / normal.squaredNorm() );
 						for(t = 0; t < n; t++) {
 							Vertex v (matches[t].first);
 
@@ -413,7 +415,7 @@ protected:
 		return false;
 	}       
 
-	void AddFace(int v0, int v1, int v2)
+    void AddFace(size_t v0, size_t v1, size_t v2)
 	{
 		assert(v0 < (int)mesh->n_vertices() && v1 < (int)mesh->n_vertices() && v2 < (int)mesh->n_vertices()); 
 		SimpleFace face;
@@ -433,7 +435,7 @@ protected:
 		Vector3 v1 = points[Vertex(edge.v1)];  
 		Vector3 v2 = points[Vertex(edge.v2)];  
 
-		Vector3 normal = cross((v1 - v0),(v2 - v0)).normalize();        
+        Vector3 normal = cross(Vector3(v1 - v0),Vector3(v2 - v0)).normalized();
 		Vector3 middle = (v0 + v1)/2;    
 		Vector3 center;    
 
@@ -445,7 +447,7 @@ protected:
 		Vector3 start_pivot = center - middle;          
 		Vector3 axis = (v1 - v0);
 
-		Scalar axis_len = axis.sqrnorm();
+        Scalar axis_len = axis.squaredNorm();
 		if(axis_len > 4*radius*radius) {
 			return -1;
 		}
@@ -507,7 +509,7 @@ protected:
 		int id = candidate.idx();
 		assert(id != edge.v0 && id != edge.v1);
 
-		Vector3 newnormal = cross((points[candidate] - v0),(v1 - v0)).normalize();
+        Vector3 newnormal = cross(Vector3(points[candidate] - v0),Vector3(v1 - v0)).normalized();
 		if(dot(normal, newnormal) < max_angle || this->nb[id] >= 2) {
 			return -1;
 		}
@@ -547,15 +549,19 @@ protected:
 	/* returns the sphere touching p0, p1, p2 of radius r such that
 	the normal of the face points toward the center of the sphere */
 
+    inline bool compareV( const Vector3 & _v, const Vector3 & p_v ) const{
+        return	(_v[2]!=p_v[2])?(_v[2]<p_v[2]):(_v[1]!=p_v[1])?(_v[1]<p_v[1]):(_v[0]<p_v[0]);
+    }
+
 	bool FindSphere(Vector3 &p0, Vector3 &p1, Vector3 &p2, Vector3 &center) {
 		//we want p0 to be always the smallest one.
 		Vector3 p[3];
 
-		if(p0 < p1 && p0 < p2) {
+        if(compareV(p0 , p1) && compareV(p0 , p2)) {
 			p[0] = p0;
 			p[1] = p1;
 			p[2] = p2;          
-		} else if(p1 < p0 && p1 < p2) {
+        } else if(compareV(p1 , p0) && compareV(p1 , p2)) {
 			p[0] = p1;
 			p[1] = p2;
 			p[2] = p0;

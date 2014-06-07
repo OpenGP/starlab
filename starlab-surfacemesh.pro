@@ -22,7 +22,7 @@ SUBDIRS += surfacemesh_filter_simplification
 SUBDIRS += surfacemesh_filter_butterfly_subdivision
 SUBDIRS += surfacemesh_filter_isotropic_remesher
 SUBDIRS += surfacemesh_filter_geoheat
-#SUBDIRS += surfacemesh_filter_ballpivoting
+SUBDIRS += surfacemesh_filter_ballpivoting
 #SUBDIRS += surfacemesh_filter_au_skeleton
 
 # Decorate Plugins [[ @TODO: PLUGIN INTERFACE NOT READY!! ]]
