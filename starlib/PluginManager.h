@@ -25,6 +25,7 @@ class STARLIB_EXPORT PluginManager: public QObject{
 /// @{ constructor
 public:
     PluginManager(Settings *settings);
+    ~PluginManager();
 private:
     Settings* _settings;
     Settings* settings(){ return _settings; }

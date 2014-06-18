@@ -68,7 +68,13 @@ PluginManager::PluginManager(Settings* settings) :
     {
         loadPlugins();
     } 
-    STARLAB_CATCH_BLOCK 
+    STARLAB_CATCH_BLOCK
+}
+
+PluginManager::~PluginManager()
+{
+    foreach(QString pluginName, _plugins.keys())
+        delete _plugins[pluginName];
 }
 
 FilterPlugin *PluginManager::getFilter(QString name){
