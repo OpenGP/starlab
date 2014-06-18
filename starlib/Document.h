@@ -61,6 +61,7 @@ public:
 public:
     /// Basic document constructor
     Document();
+    ~Document();
     /// Compute bounding box of all the elements in the scene
     BBox3 bbox();
     /// Add a model (if it's only one becomes selection)

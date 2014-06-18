@@ -9,7 +9,12 @@ Document::Document(){
     /// @todo does EIGEN offer a way of doing this?
     _selectedModel = NULL;
     name = "Unsaved Project";
-	_isBusy = 0;
+    _isBusy = 0;
+}
+
+Document::~Document()
+{
+    clear();
 }
 
 void Document::pushBusy(){
