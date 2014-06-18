@@ -113,7 +113,7 @@ defineTest(StarlabTemplate){
     DEPENDPATH  *= $$_PRO_FILE_PWD_
     INCLUDEPATH *= $$_PRO_FILE_PWD_
 
-    QT*=xml opengl
+    QT*=xml opengl widgets
 
     # LOADS EIGEN (NOT ELEGANT... WHY NOT AS QGLVIEWER?)
     INCLUDEPATH *= $$[EIGENPATH]
