@@ -272,9 +272,10 @@ namespace starlab{
 	class PlaneSoup : public RenderObject::Base{
 		QVector< QPair<QVector3,QVector3> > planes;
 		double scale;
+		bool useColor;
 	public:
-		PlaneSoup(double s = 1.0, const QColor& c = Qt::green):RenderObject::Base(1, c)
-		{ scale = s; }
+		PlaneSoup(double s = 1.0, bool isUseColor = false, const QColor& c = Qt::green):RenderObject::Base(1, c)
+		{ scale = s; useColor = isUseColor; }
 
 		void addPlane(const QVector3& center, const QVector3& normal){
 			planes.push_back( qMakePair(center, normal) );
@@ -294,6 +295,14 @@ namespace starlab{
 
 			float color[4];
 			glGetFloatv(GL_CURRENT_COLOR, color);
+
+			if(useColor)
+			{
+				color[0] = _color.redF();
+				color[1] = _color.greenF();
+				color[2] = _color.blueF();
+				color[3] = _color.alphaF();
+			}
 
 			// Bake geometry
 			int c = planes.size();
@@ -336,14 +345,17 @@ namespace starlab{
 			glEnd();
 
 			// Draw Normal
+			glDisable(GL_DEPTH_TEST);
 			glBegin(GL_LINES);
 			for(int i = 0; i < c; i++)
 			{
+				glColor4f(0.8,0.8,0.8,1);
 				Eigen::Vector3d center = planes[i].first;
 				glv(center);
-                glv(Eigen::Vector3d(center + ((Eigen::Vector3d)n[i] * 0.2 * scale)));
+                glv(Eigen::Vector3d(center + ((Eigen::Vector3d)n[i] * 0.3 * scale)));
 			}
 			glEnd();
+			glEnable(GL_DEPTH_TEST);
 
 			// Draw Transparent Fills
 			glColor4f(color[0], color[1], color[2], 0.05f);
