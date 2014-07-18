@@ -1,9 +1,11 @@
 #pragma once
+#include "starlib_global.h"
+
 #include <QColor>
 #include <QGLWidget>
 #include "Eigen/Dense"
 
-class RenderObject{
+class STARLIB_EXPORT RenderObject{
     typedef Eigen::Vector3d Vector3;
 
 public:

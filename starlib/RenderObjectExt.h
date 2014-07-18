@@ -349,7 +349,7 @@ namespace starlab{
 			glBegin(GL_LINES);
 			for(int i = 0; i < c; i++)
 			{
-				glColor4f(0.8,0.8,0.8,1);
+				glColor4f(0.8f,0.8f,0.8f,1);
 				Eigen::Vector3d center = planes[i].first;
 				glv(center);
                 glv(Eigen::Vector3d(center + ((Eigen::Vector3d)n[i] * 0.3 * scale)));
