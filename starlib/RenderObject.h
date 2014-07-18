@@ -10,7 +10,7 @@ class STARLIB_EXPORT RenderObject{
 
 public:
     
-    class Base{
+    class STARLIB_EXPORT Base{
     protected:
         float _size;
         QColor _color;
@@ -22,21 +22,21 @@ public:
         Base& color(QColor color){ this->_color=color; return *this; }
     };
     
-    class Triangle : public Base{
+    class STARLIB_EXPORT Triangle : public Base{
     public:
         Vector3 p1,p2,p3;
         Triangle(Vector3 p1, Vector3 p2, Vector3 p3, QColor color=Qt::red);
         virtual void draw(QGLWidget& widget);
     };
 
-    class Segment : public Base{
+    class STARLIB_EXPORT Segment : public Base{
     public:
         Vector3 p1,p2;
         Segment(Vector3 p1, Vector3 p2, float size, QColor color=Qt::red);
         virtual void draw(QGLWidget& widget);
     };
 
-    class Ray : public Base{
+    class STARLIB_EXPORT Ray : public Base{
     public:
         Vector3 orig;
         Vector3 dir;
@@ -48,14 +48,14 @@ public:
         
     };
     
-    class Point : public Base{
+    class STARLIB_EXPORT Point : public Base{
     public:
         Vector3 p;
         Point(Vector3 p, float size, QColor color=Qt::red);
         virtual void draw(QGLWidget& widget);
     };
 
-    class Text : public Base{
+    class STARLIB_EXPORT Text : public Base{
     public:
         int _x, _y;
         QString _text;
