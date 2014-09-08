@@ -113,7 +113,7 @@ public:
 			  radius = maxDist;
 		  }
 		  if(radius == 0)
-			  radius = sqrt( pow(mesh->bbox().size().length(), 2) / this->mesh->n_vertices() );
+              radius = sqrt( pow(mesh->bbox().sizes().norm(), 2) / this->mesh->n_vertices() );
 
 		  min_edge *= radius;
 		  max_edge *= radius;    
@@ -231,9 +231,9 @@ protected:
 						Scalar d0 = (p2 - p1).norm();
 						if(d0 < min_edge || d0 > max_edge) continue;
 
-						Vector3 normal = cross((p1 - p0),(p2 - p0));
+                        Vector3 normal = ((p1 - p0).cross(p2 - p0));
 
-						if(dot(normal, p0 - baricenter) < 0) continue;
+                        if(normal.dot(p0 - baricenter) < 0) continue;
 
 						if(!FindSphere(p0, p1, p2, center)) {
 							continue;
@@ -252,7 +252,7 @@ protected:
 						}
 
 						//check on the other side there is not a surface
-						Vector3 opposite = center + normal * ( (dot(center - p0,(normal)) * 2) / normal.sqrnorm() );
+                        Vector3 opposite = center + normal * ( ((center - p0).dot(normal) * 2) / normal.squaredNorm() );
 						for(t = 0; t < n; t++) {
 							Vertex v (matches[t].first);
 
@@ -433,9 +433,9 @@ protected:
 		Vector3 v1 = points[Vertex(edge.v1)];  
 		Vector3 v2 = points[Vertex(edge.v2)];  
 
-		Vector3 normal = cross((v1 - v0),(v2 - v0)).normalize();        
+        Vector3 normal = ((v1 - v0).cross(v2 - v0)).normalized();
 		Vector3 middle = (v0 + v1)/2;    
-		Vector3 center;    
+        Vector3 center(0,0,0);
 
 		if(!FindSphere(v0, v1, v2, center)) {
 			//      assert(0);
@@ -445,7 +445,7 @@ protected:
 		Vector3 start_pivot = center - middle;          
 		Vector3 axis = (v1 - v0);
 
-		Scalar axis_len = axis.sqrnorm();
+        Scalar axis_len = axis.squaredNorm();
 		if(axis_len > 4*radius*radius) {
 			return -1;
 		}
@@ -507,7 +507,7 @@ protected:
 		int id = candidate.idx();
 		assert(id != edge.v0 && id != edge.v1);
 
-		Vector3 newnormal = cross((points[candidate] - v0),(v1 - v0)).normalize();
+        Vector3 newnormal = ((points[candidate] - v0).cross(v1 - v0)).normalized();
 		if(dot(normal, newnormal) < max_angle || this->nb[id] >= 2) {
 			return -1;
 		}
@@ -544,6 +544,13 @@ protected:
 		return id;
 	}
 
+    inline bool lessThanVec3 (  Vector3 & _v,  Vector3 & p_v )
+    {
+        return	(_v[2]!=p_v[2])?(_v[2]<p_v[2]):
+                (_v[1]!=p_v[1])?(_v[1]<p_v[1]):
+                               (_v[0]<p_v[0]);
+    }
+
 	/* returns the sphere touching p0, p1, p2 of radius r such that
 	the normal of the face points toward the center of the sphere */
 
@@ -551,11 +558,11 @@ protected:
 		//we want p0 to be always the smallest one.
 		Vector3 p[3];
 
-		if(p0 < p1 && p0 < p2) {
+        if(lessThanVec3(p0 , p1) && lessThanVec3(p0 , p2)) {
 			p[0] = p0;
 			p[1] = p1;
 			p[2] = p2;          
-		} else if(p1 < p0 && p1 < p2) {
+        } else if(lessThanVec3(p1 , p0) && lessThanVec3(p1 , p2)) {
 			p[0] = p1;
 			p[1] = p2;
 			p[2] = p0;

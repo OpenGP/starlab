@@ -40,5 +40,3 @@ void surfacemesh_filter_ballpivoting::applyFilter(RichParameterSet* pars)
     document()->addModel( newModel );
     document()->popBusy();
 }
-
-Q_EXPORT_PLUGIN(surfacemesh_filter_ballpivoting)

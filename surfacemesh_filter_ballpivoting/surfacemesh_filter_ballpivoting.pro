@@ -1,7 +1,7 @@
-load($$[STARLAB])
-load($$[SURFACEMESH])
-load($$[EIGEN])
-load($$[NANOFLANN])
+include($$[STARLAB])
+include($$[SURFACEMESH])
+include($$[EIGEN])
+include($$[NANOFLANN])
 StarlabTemplate(plugin)
 
 HEADERS += surfacemesh_filter_ballpivoting.h
