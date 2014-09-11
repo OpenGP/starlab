@@ -679,7 +679,12 @@ namespace starlab{
 	public:
 		BoxSoup(bool is_wireframe = true, float lineWidth = 2) : RenderObject::Base(lineWidth, Qt::black), lineWidth(lineWidth)
 		{ isWireframe = is_wireframe; }
-
+		
+		void clear(){
+			boxes.clear();
+			colors.clear();
+		}
+		
 		void addBox( const Eigen::AlignedBox3d & box, const QColor & color = Qt::yellow ){
 			boxes.push_back( box );
 			colors.push_back( color );
