@@ -56,6 +56,7 @@ namespace starlab{
 
 			drawTris();
 			drawQuads();
+			drawGeneralPolys();
 
 			glDisable(GL_LIGHTING);
 
@@ -107,6 +108,18 @@ namespace starlab{
 				}
 			}
 			glEnd();
+		}
+
+		void drawGeneralPolys(bool isColored = true){
+			for(int i = 0; i < (int) polys.size(); i++)
+			{
+				if(polys[i].size() <= 4) continue;
+				glBegin(GL_POLYGON);
+				glNormal3d(polys_normals[i].x(),polys_normals[i].y(),polys_normals[i].z());
+				if(isColored) glColorQt(polys_colors[i]);
+				for(int p = 0; p < polys[i].size(); p++) glVertQt(polys[i][p]);
+				glEnd();
+			}
 		}
 
 		void addPoly(const QVector<QVector3>& points, const QColor& c = Qt::red){
@@ -657,6 +670,78 @@ namespace starlab{
 		}
 	};
 
+	class BoxSoup : public RenderObject::Base{
+		QVector< Eigen::AlignedBox3d > boxes;
+		QVector< QColor > colors;
+		bool isWireframe;
+		float lineWidth;
+
+	public:
+		BoxSoup(bool is_wireframe = true, float lineWidth = 2) : RenderObject::Base(lineWidth, Qt::black), lineWidth(lineWidth)
+		{ isWireframe = is_wireframe; }
+
+		void addBox( const Eigen::AlignedBox3d & box, const QColor & color = Qt::yellow ){
+			boxes.push_back( box );
+			colors.push_back( color );
+		}
+
+		void draw(QGLWidget &widget){ this->draw(); Q_UNUSED(widget) }
+
+		void draw()
+		{
+			glEnable(GL_LIGHTING);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+			if(isWireframe){
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				glDisable(GL_LIGHTING);
+				glLineWidth(lineWidth);
+			}
+
+			for(int i = 0; i < (int) boxes.size(); i++){
+				glColorQt(colors[i]);
+				drawBox( boxes[i] );
+			}
+
+			glEnable(GL_LIGHTING);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
+
+		static void drawBox( const Eigen::AlignedBox3d & box )
+		{
+			QVector<Eigen::Vector3d> corners;
+			corners << box.corner(Eigen::AlignedBox3d::BottomLeftFloor)
+				<< box.corner(Eigen::AlignedBox3d::BottomRightFloor)
+				<< box.corner(Eigen::AlignedBox3d::TopRightFloor)
+				<< box.corner(Eigen::AlignedBox3d::TopLeftFloor)
+				<< box.corner(Eigen::AlignedBox3d::BottomLeftCeil)
+				<< box.corner(Eigen::AlignedBox3d::BottomRightCeil)
+				<< box.corner(Eigen::AlignedBox3d::TopRightCeil)
+				<< box.corner(Eigen::AlignedBox3d::TopLeftCeil);
+
+			glBegin(GL_QUADS);
+			glNormal3d(0,0,-1);
+			glVertex3dv(corners[0].data());	glVertex3dv(corners[1].data());
+			glVertex3dv(corners[2].data());	glVertex3dv(corners[3].data());
+			glNormal3d(0,0,1);
+			glVertex3dv(corners[4].data());	glVertex3dv(corners[5].data());
+			glVertex3dv(corners[6].data());	glVertex3dv(corners[7].data());
+			glNormal3d(0,-1,0);
+			glVertex3dv(corners[0].data());	glVertex3dv(corners[1].data());
+			glVertex3dv(corners[5].data());	glVertex3dv(corners[4].data());
+			glNormal3d(0,1,0);
+			glVertex3dv(corners[2].data());	glVertex3dv(corners[3].data());
+			glVertex3dv(corners[7].data());	glVertex3dv(corners[6].data());
+			glNormal3d(-1,0,0);
+			glVertex3dv(corners[3].data());	glVertex3dv(corners[0].data());
+			glVertex3dv(corners[4].data());	glVertex3dv(corners[7].data());
+			glNormal3d(1,0,0);
+			glVertex3dv(corners[2].data());	glVertex3dv(corners[1].data());
+			glVertex3dv(corners[5].data());	glVertex3dv(corners[6].data());
+			glEnd();
+		}
+	};
+
 	// Helper functions
 	double inline uniformRand(double a = 0.0, double b = 1.0){
 		double len = b - a;
@@ -678,10 +763,10 @@ namespace starlab{
 	}
 
 	/*
-	   Return a RGB colour value given a scalar v in the range [vmin,vmax]
-	   In this case each colour component ranges from 0 (no contribution) to
+	   Return a RGB color value given a scalar v in the range [vmin,vmax]
+	   In this case each color component ranges from 0 (no contribution) to
 	   1 (fully saturated), modifications for other ranges is trivial.
-	   The colour is clipped at the end of the scales if v is outside
+	   The color is clipped at the end of the scales if v is outside
 	   the range [vmin,vmax] - from StackOverflow/7706339
 	*/
     static inline QColor qtJetColor(double v, double vmin = 0,double vmax = 1)
@@ -748,7 +833,7 @@ namespace starlab{
 		return QColor::fromHsvF(h, saturation, val);
 	}
 
-	// for mid = 0, colors are centred around Red
+	// for mid = 0, colors are centered around Red
     static inline QColor qRandomColor3(double mid = 0, double range = 0.5, double saturation = 1.0, double val = 1.0)
 	{
 		// Bound checks

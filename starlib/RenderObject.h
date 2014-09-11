@@ -3,7 +3,8 @@
 
 #include <QColor>
 #include <QGLWidget>
-#include "Eigen/Dense"
+#include <Eigen/Dense>
+#include <Eigen/Geometry>
 
 class STARLIB_EXPORT RenderObject{
     typedef Eigen::Vector3d Vector3;
