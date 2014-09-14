@@ -225,6 +225,12 @@ namespace starlab{
 		size_t count(){
 			return points.size();
 		}
+
+		static inline PointSoup * drawPoint(const QVector3& p, float size = 6.0f, const QColor & color = Qt::blue){
+			auto ps = new PointSoup( size );
+			ps->addPoint(p,color);
+			return ps;
+		}
 	};
 
 	class VectorSoup : public RenderObject::Base{
