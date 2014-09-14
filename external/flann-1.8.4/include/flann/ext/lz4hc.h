@@ -39,7 +39,7 @@ extern "C" {
 #endif
 
 
-int LZ4_compressHC (const char* source, char* dest, int inputSize);
+static inline int LZ4_compressHC (const char* source, char* dest, int inputSize);
 /*
 LZ4_compressHC :
     return : the number of bytes in compressed buffer dest
@@ -49,7 +49,7 @@ LZ4_compressHC :
         Worst case size evaluation is provided by function LZ4_compressBound() (see "lz4.h")
 */
 
-int LZ4_compressHC_limitedOutput (const char* source, char* dest, int inputSize, int maxOutputSize);
+static inline int LZ4_compressHC_limitedOutput (const char* source, char* dest, int inputSize, int maxOutputSize);
 /*
 LZ4_compress_limitedOutput() :
     Compress 'inputSize' bytes from 'source' into an output buffer 'dest' of maximum size 'maxOutputSize'.
@@ -70,11 +70,11 @@ Decompression functions are provided within LZ4 source code (see "lz4.h") (BSD l
 
 /* Advanced Functions */
 
-void* LZ4_createHC (const char* inputBuffer);
-int   LZ4_compressHC_continue (void* LZ4HC_Data, const char* source, char* dest, int inputSize);
-int   LZ4_compressHC_limitedOutput_continue (void* LZ4HC_Data, const char* source, char* dest, int inputSize, int maxOutputSize);
-char* LZ4_slideInputBufferHC (void* LZ4HC_Data);
-int   LZ4_freeHC (void* LZ4HC_Data);
+static inline void* LZ4_createHC (const char* inputBuffer);
+static inline int   LZ4_compressHC_continue (void* LZ4HC_Data, const char* source, char* dest, int inputSize);
+static inline int   LZ4_compressHC_limitedOutput_continue (void* LZ4HC_Data, const char* source, char* dest, int inputSize, int maxOutputSize);
+static inline char* LZ4_slideInputBufferHC (void* LZ4HC_Data);
+static inline int   LZ4_freeHC (void* LZ4HC_Data);
 
 /* 
 These functions allow the compression of dependent blocks, where each block benefits from prior 64 KB within preceding blocks.
@@ -105,9 +105,8 @@ Compression can then resume, using LZ4_compressHC_continue() or LZ4_compressHC_l
 When compression is completed, a call to LZ4_freeHC() will release the memory used by the LZ4HC Data Structure.
 */
 
+#include "lz4hc.hpp"
 
 #if defined (__cplusplus)
 }
 #endif
-
-#include "lz4hc.hpp"

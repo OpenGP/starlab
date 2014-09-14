@@ -50,8 +50,8 @@ extern "C" {
 // Simple Functions
 //****************************
 
-int LZ4_compress        (const char* source, char* dest, int inputSize);
-int LZ4_decompress_safe (const char* source, char* dest, int inputSize, int maxOutputSize);
+static inline int LZ4_compress        (const char* source, char* dest, int inputSize);
+static inline int LZ4_decompress_safe (const char* source, char* dest, int inputSize, int maxOutputSize);
 
 /*
 LZ4_compress() :
@@ -91,7 +91,7 @@ LZ4_compressBound() :
 */
 
 
-int LZ4_compress_limitedOutput (const char* source, char* dest, int inputSize, int maxOutputSize);
+static inline int LZ4_compress_limitedOutput (const char* source, char* dest, int inputSize, int maxOutputSize);
 
 /*
 LZ4_compress_limitedOutput() :
@@ -106,7 +106,7 @@ LZ4_compress_limitedOutput() :
 */
 
 
-int LZ4_decompress_fast (const char* source, char* dest, int outputSize);
+static inline int LZ4_decompress_fast (const char* source, char* dest, int outputSize);
 
 /*
 LZ4_decompress_fast() :
@@ -119,7 +119,7 @@ LZ4_decompress_fast() :
            Destination buffer must be already allocated. Its size must be a minimum of 'outputSize' bytes.
 */
 
-int LZ4_decompress_safe_partial (const char* source, char* dest, int inputSize, int targetOutputSize, int maxOutputSize);
+static inline int LZ4_decompress_safe_partial (const char* source, char* dest, int inputSize, int targetOutputSize, int maxOutputSize);
 
 /*
 LZ4_decompress_safe_partial() :
@@ -139,11 +139,11 @@ LZ4_decompress_safe_partial() :
 // Stream Functions
 //****************************
 
-void* LZ4_create (const char* inputBuffer);
-int   LZ4_compress_continue (void* LZ4_Data, const char* source, char* dest, int inputSize);
-int   LZ4_compress_limitedOutput_continue (void* LZ4_Data, const char* source, char* dest, int inputSize, int maxOutputSize);
-char* LZ4_slideInputBuffer (void* LZ4_Data);
-int   LZ4_free (void* LZ4_Data);
+static inline void* LZ4_create (const char* inputBuffer);
+static inline int   LZ4_compress_continue (void* LZ4_Data, const char* source, char* dest, int inputSize);
+static inline int   LZ4_compress_limitedOutput_continue (void* LZ4_Data, const char* source, char* dest, int inputSize, int maxOutputSize);
+static inline char* LZ4_slideInputBuffer (void* LZ4_Data);
+static inline int   LZ4_free (void* LZ4_Data);
 
 /* 
 These functions allow the compression of dependent blocks, where each block benefits from prior 64 KB within preceding blocks.
@@ -175,8 +175,8 @@ When compression is completed, a call to LZ4_free() will release the memory used
 */
 
 
-int LZ4_decompress_safe_withPrefix64k (const char* source, char* dest, int inputSize, int maxOutputSize);
-int LZ4_decompress_fast_withPrefix64k (const char* source, char* dest, int outputSize);
+static inline int LZ4_decompress_safe_withPrefix64k (const char* source, char* dest, int inputSize, int maxOutputSize);
+static inline int LZ4_decompress_fast_withPrefix64k (const char* source, char* dest, int outputSize);
 
 /*
 *_withPrefix64k() :
@@ -199,10 +199,10 @@ They are provided here for compatibility with existing user programs.
 */
 
 
+#include "lz4.hpp"
+
 
 #if defined (__cplusplus)
 }
 #endif
 
-
-#include "lz4.hpp"
