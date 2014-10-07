@@ -6,7 +6,6 @@
 // Eigne matrix library
 #include <Eigen/Core>
 #include <Eigen/Sparse>
-#include <Eigen/CholmodSupport>
 
 using namespace std;
 using namespace Eigen;
@@ -14,7 +13,12 @@ using namespace SurfaceMesh;
 
 #define qRanged(min, v, max) ( qMax(min, qMin(v, max)) )
 #define EPSILON 1e-12
-typedef CholmodSupernodalLLT< SparseMatrix<double> > CholmodSolver;
+#ifndef GEO_HEAT_USE_EIGEN_SOLVER
+#include <Eigen/CholmodSupport>
+typedef CholmodSupernodalLLT< SparseMatrix<double> > GeoHeatSolver;
+#else
+typedef Eigen::SimplicialLLT< SparseMatrix<double> > GeoHeatSolver;
+#endif
 
 static uint qHash( const Vertex &key ){return qHash(key.idx()); }
 
@@ -29,7 +33,7 @@ public:
     Vector3FaceProperty fgradient;
 
     SparseMatrix<Scalar>    Lc_;
-    CholmodSolver heat_flow, poisson_solver;
+	GeoHeatSolver heat_flow, poisson_solver;
 
 	Scalar t_factor;
 
