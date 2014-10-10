@@ -22,6 +22,7 @@ system(qmake -set FLANN         $$PWD/external/flann-1.8.4/flann.prf)
 system(qmake -set MATLAB        $$PWD/external/matlab/matlab.prf)
 system(qmake -set KDTREEMATLAB  $$PWD/external/kdtree-matlab/kdtree-matlab.prf)
 system(qmake -set OCTREE        $$PWD/external/octree/octree.prf)
+system(qmake -set PQP           $$PWD/external/pqp-2.0/pqp.prf)
 
 #--- THREE CORE BUILD APP/LIBRARIES
 SUBDIRS += starlib   #< SHARED LIBRARY
