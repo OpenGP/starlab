@@ -102,13 +102,12 @@ typedef long ptr_intT;
    If you need separate address spaces, you can swap the
    contents of qhmem.
 */
-typedef struct qhmemT qhmemT;
-extern qhmemT qhmem;
 
 #ifndef DEFsetT
 #define DEFsetT 1
 typedef struct setT setT;          /* defined in qset.h */
 #endif
+
 
 /* Update qhmem in mem.c if add or remove fields */
 struct qhmemT {               /* global memory management variables */
@@ -143,6 +142,13 @@ struct qhmemT {               /* global memory management variables */
   int      cntlarger;         /* count of setlarger's */
   int      totlarger;         /* total copied by setlarger */
 };
+
+typedef struct qhmemT qhmemT;
+
+
+extern __declspec(thread) qhmemT qhmem;
+
+
 
 
 /*==================== -macros ====================*/

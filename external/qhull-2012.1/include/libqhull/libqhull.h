@@ -409,7 +409,7 @@ struct vertexT {
    Qhull is not multithreaded.  Global state could be stored in thread-local storage.
 */
 
-extern int qhull_inuse;
+extern __declspec(thread) int qhull_inuse;
 
 typedef struct qhT qhT;
 #if qh_QHpointer_dllimport
@@ -417,7 +417,7 @@ typedef struct qhT qhT;
 __declspec(dllimport) extern qhT *qh_qh;     /* allocated in global.c */
 #elif qh_QHpointer
 #define qh qh_qh->
-extern qhT *qh_qh;     /* allocated in global.c */
+extern __declspec(thread) qhT *qh_qh;     /* allocated in global.c */
 #elif qh_dllimport
 #define qh qh_qh.
 __declspec(dllimport) extern qhT qh_qh;      /* allocated in global.c */

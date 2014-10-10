@@ -490,7 +490,7 @@ typedef struct qhstatT qhstatT;
 __declspec(dllimport) extern qhstatT *qh_qhstat;
 #elif qh_QHpointer
 #define qhstat qh_qhstat->
-extern qhstatT *qh_qhstat;
+extern __declspec(thread) qhstatT *qh_qhstat;
 #elif qh_dllimport
 #define qhstat qh_qhstat.
 __declspec(dllimport) extern qhstatT qh_qhstat;

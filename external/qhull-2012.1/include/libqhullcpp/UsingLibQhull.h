@@ -34,7 +34,7 @@ longjmp on exit.
     class Qhull;
 
 #// Global variables
-extern Qhull           *s_qhull_output; //! Provide qh_fprintf (Qhull.cpp) access to Qhull
+extern __declspec(thread) Qhull           *s_qhull_output; //! Provide qh_fprintf (Qhull.cpp) access to Qhull
 
 class UsingLibQhull {
 
@@ -45,21 +45,21 @@ private:
 
 #//Class globals
     //! Global flags
-    static bool         s_using_libqhull; //! True if UsingLibQhull is in scope
+    static __declspec(thread) bool         s_using_libqhull; //! True if UsingLibQhull is in scope
 
     //! Use global values if s_has_... is set
-    static bool         s_has_angle_epsilon; //! True if s_angle_epsilon defined
-    static bool         s_has_distance_epsilon; //! True if s_distance_epsilon defined
-    static bool         s_has_points;        //! If False (default), Qhull() runs setPointBase()
-    static bool         s_has_vertex_dimension; //! True if s_vertex_dimension defined
+    static __declspec(thread) bool         s_has_angle_epsilon; //! True if s_angle_epsilon defined
+    static __declspec(thread) bool         s_has_distance_epsilon; //! True if s_distance_epsilon defined
+    static __declspec(thread) bool         s_has_points;        //! If False (default), Qhull() runs setPointBase()
+    static __declspec(thread) bool         s_has_vertex_dimension; //! True if s_vertex_dimension defined
 
     //! Global values
-    static double       s_angle_epsilon;   //! Epsilon for angle equality
-    static double       s_distance_epsilon;   //! Epsilon for distance equality
-    static const coordT *s_points_begin;            //! For QhullPoint::id() w/o qhRunId.
-    static const coordT *s_points_end;            //! For QhullPoint::id() w/o qhRunId.
-    static int          s_points_dimension;
-    static int          s_vertex_dimension; //! Default dimension (e.g., if Vertex::dimension() >= 16)
+    static __declspec(thread) double       s_angle_epsilon;   //! Epsilon for angle equality
+    static __declspec(thread) double       s_distance_epsilon;   //! Epsilon for distance equality
+    static __declspec(thread) const coordT *s_points_begin;            //! For QhullPoint::id() w/o qhRunId.
+    static __declspec(thread) const coordT *s_points_end;            //! For QhullPoint::id() w/o qhRunId.
+    static __declspec(thread) int          s_points_dimension;
+    static __declspec(thread) int          s_vertex_dimension; //! Default dimension (e.g., if Vertex::dimension() >= 16)
 
 public:
 #//Class constants
