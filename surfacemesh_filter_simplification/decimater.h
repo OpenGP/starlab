@@ -156,7 +156,7 @@ private:
         }
     }
 
-    inline double vertex_error(QuadricMatrix q, Point p)
+    inline double vertex_error(const QuadricMatrix& q, Point p)
     {
         double x = p.x(), y = p.y(), z = p.z();
         return q(0)*x*x + 2*q(1)*x*y + 2*q(2)*x*z + 2*q(3)*x + q(5)*y*y
