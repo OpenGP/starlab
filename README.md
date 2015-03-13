@@ -2,9 +2,9 @@
 
 A lightweight, modular, and cross-platform (Windows, OSX, Linux) 3D geometry processing environment.
 
-<img src="/media/coverimageWin8.png" alt="Running on Windows 8" style="width:33%"/>
-<img src="/media/coverimageOSX.png" alt="Running ICP plugin on OSX" style="width:33%"/>
-<img src="/media/coverimageUbuntu.png" alt="Running on Ubuntu" style="width:33%"/>
+<img src="/media/coverimageWin8.png" alt="Running on Windows 8" style="width:30%"/>
+<img src="/media/coverimageOSX.png" alt="Running ICP plugin on OSX" style="width:30%"/>
+<img src="/media/coverimageUbuntu.png" alt="Running on Ubuntu" style="width:30%"/>
 
 ## Requirments
   * Qt 5
