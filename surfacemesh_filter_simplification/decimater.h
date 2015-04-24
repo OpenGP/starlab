@@ -2,7 +2,7 @@
 #pragma once
 #include "SurfaceMeshModel.h"
 
-typedef Eigen::Matrix<double,4,4,Eigen::RowMajor> QuadricMatrix;
+typedef Eigen::Matrix<double,4,4,(Eigen::DontAlign|Eigen::RowMajor)> QuadricMatrix;
 
 class Decimater{
 private:
