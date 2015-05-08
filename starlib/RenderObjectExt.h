@@ -469,6 +469,7 @@ namespace starlab{
 	};
 
 	class SphereSoup : public RenderObject::Base{
+    protected:
 		QVector< QVector3 > centers;
 		QVector< float > radii;
 		QVector< QColor > colors;
@@ -483,8 +484,8 @@ namespace starlab{
 
 		void draw(QGLWidget &widget){ this->draw(); Q_UNUSED(widget) }
 
-		void draw(){
-			glEnable(GL_LIGHTING);
+        void draw(bool isEnableLighting = true){
+            if(isEnableLighting) glEnable(GL_LIGHTING);
 
 			//static void renderSphere(float cx, float cy, float cz, float r)
 			float cx = 0, cy = 0, cz = 0, r = 1;
@@ -502,7 +503,7 @@ namespace starlab{
 				float theta1 = 0.0, theta2 = 0.0, theta3 = 0.0;
 				float ex = 0.0f, ey = 0.0f, ez = 0.0f;
 				float px = 0.0f, py = 0.0f, pz = 0.0f;
-				GLfloat vertices[p*6+6], normals[p*6+6], texCoords[p*4+4];
+                GLfloat vertices[p*6+6], normals[p*6+6], texCoords[p*4+4];
 
 				for(int i = 0; i < p/2; ++i){
 					theta1 = i * (M_PI*2) / p - M_PI_2;

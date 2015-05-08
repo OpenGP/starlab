@@ -19,8 +19,8 @@ Application::Application(){
 }
 
 Application::~Application(){
+	delete _document;
     delete _pluginManager;
-    delete _document;
     delete _settings;
 }
 
