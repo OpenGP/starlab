@@ -10,9 +10,6 @@ A lightweight, modular, and cross-platform (Windows, OSX, Linux) 3D geometry pro
   * Qt 5
   * Modern C++ compiler
 
-## Setup
-  * You also need to clone 'starlab.core' and most likely 'starlab.surfacemesh'.
-
 ## Features
   * Lightweight, minimal external dependency
   * Uses a state of the art mesh data-structure and linear algebra library (Surface_mesh + Eigen)
