@@ -63,7 +63,7 @@ DrawArea::DrawArea(MainWindow* parent)
     
     /// @todo setup View->ToggleFPS
     /// @todo why is update broken when nothing is moving?
-    this->setFPSIsDisplayed(true);
+    //this->setFPSIsDisplayed(true);
 
     // setGridIsDrawn(false);
     
@@ -73,9 +73,9 @@ DrawArea::DrawArea(MainWindow* parent)
 
     /// Disables all default qglviewer predefined keyboard shortcuts
     {
-        setShortcut(DRAW_AXIS,0);
-        setShortcut(DRAW_GRID,0);
-        setShortcut(DISPLAY_FPS,0);
+        //setShortcut(DRAW_GRID,0);
+		//setShortcut(DISPLAY_FPS, 0);
+		setShortcut(DRAW_AXIS, 0);
         setShortcut(STEREO,0);
         setShortcut(HELP,0);
         setShortcut(EXIT_VIEWER,0);
@@ -137,6 +137,16 @@ void DrawArea::setIsoProjection(){
     camera()->interpolateTo(f,0.25);
 }
 
+void DrawArea::toggleBackgroundEffect()
+{
+	this->isBackgroundEffects = !this->isBackgroundEffects;
+
+	/// Save it in the settings
+	QString key = "EnableBackgroundEffect";
+	settings()->set(key, isBackgroundEffects);
+	settings()->sync();
+}
+
 void DrawArea::viewFrom(QAction * a){
 
     if(!document()->selectedModel()) return;
@@ -184,12 +194,17 @@ void DrawArea::viewFrom(QAction * a){
 
 void DrawArea::init(){   
     /// Background color from settings file
-    QString key = "DefaultBackgroundColor";
+    QString backColorKey = "DefaultBackgroundColor";
 
-    QColor white_transp(255,255,255,255);
-    settings()->setDefault( key, QVariant(white_transp) );
-    setBackgroundColor( settings()->getQColor(key) );
+    QColor white_transp(136,157,179,255);
+	settings()->setDefault(backColorKey, QVariant(white_transp));
+	setBackgroundColor(settings()->getQColor(backColorKey));
     camera()->setUpVector(Vec(0,1,0));
+
+	/// Simple background shading effect
+	QString backEffects = "EnableBackgroundEffect";
+	settings()->setDefault(backEffects, true);
+	this->isBackgroundEffects = settings()->getBool(backEffects);
 
     resetViewport();
 }
@@ -209,6 +224,21 @@ void DrawArea::draw_models(){
 
 void DrawArea::draw(){
     glEnable(GL_MULTISAMPLE); ///< Enables anti-aliasing
+
+	/// Background effect
+	if (isBackgroundEffects){
+		startScreenCoordinatesSystem();
+		glDisable(GL_LIGHTING);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glBegin(GL_QUADS);
+		glColor4d(0, 0, 0, 0); glVertex2d(0, 0); glVertex2d(width(), 0);
+		glColor4d(0, 0, 0, 0.8); glVertex2d(width(), height()); glVertex2d(0, height());
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		stopScreenCoordinatesSystem();
+	}
 
     /// Draw the models
     draw_models();

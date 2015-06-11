@@ -50,7 +50,7 @@ public:
     /// Where was starlab executed from?
     QDir executionDirectory();
     
-    static QString version(){ return "1.0.4 alpha"; }
+    static QString version(){ return "1.1.0"; }
 };
 
 } // Namespace

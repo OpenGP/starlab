@@ -14,6 +14,7 @@ using namespace SurfaceMesh;
 #define qRanged(min, v, max) ( qMax(min, qMin(v, max)) )
 #define EPSILON 1e-12
 #ifndef GEO_HEAT_USE_EIGEN_SOLVER
+#pragma warning(disable:4267) // disable Cholmod warnings on x64
 #include <Eigen/CholmodSupport>
 typedef CholmodSupernodalLLT< SparseMatrix<double> > GeoHeatSolver;
 #else

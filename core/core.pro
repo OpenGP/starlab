@@ -26,8 +26,12 @@ system(qmake -set PQP           $$PWD/external/pqp-2.0/pqp.prf)
 
 #--- THREE CORE BUILD APP/LIBRARIES
 SUBDIRS += starlib   #< SHARED LIBRARY
-SUBDIRS += starterm  #< TERMINAL APPLICATION
 SUBDIRS += starlab   #< GUI APPLICATION
+SUBDIRS += starterm  #< TERMINAL APPLICATION
+
+#--- DEPENDENCY
+starlab.depends = starlib
+starterm.depends = starlib
 
 #--- AND THE CORE PLUGINS TO COMPLEMENT
 SUBDIRS += plugins/render_bbox   #< the default renderer, applies to any model

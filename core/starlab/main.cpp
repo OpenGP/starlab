@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QColor>
+#include <QDesktopWidget>
 #include <QGLFormat> /// @todo why in main.cpp???
 #include "StarlabMainWindow.h"
 #include "StarlabApplicationGUI.h"
@@ -18,15 +19,15 @@ int main(int argc, char *argv[]) {
 	Application application;    
 
 	/// Create a new window (@internal *new* is important)
-	MainWindow* mainWindow = new MainWindow(&application);
+	auto mainWindow = QSharedPointer<MainWindow>(new MainWindow(&application));
 
 	/// Manages I/O requested by Operating system
-	FileOpenEater* eater = new FileOpenEater(mainWindow);
+	FileOpenEater* eater = new FileOpenEater(mainWindow.data());
 	mainWindow->installEventFilter(eater);
 
 	/// Open command line input
 	for(int i=1; i<argc; i++)
-	    QApplication::sendEvent(mainWindow, new QFileOpenEvent(argv[i]));
+	    QApplication::sendEvent(mainWindow.data(), new QFileOpenEvent(argv[i]));
 
 	/// Automatically load layer menu if I opened more than one model    
 	if(mainWindow->document()->models().size()>=2)
@@ -37,6 +38,10 @@ int main(int argc, char *argv[]) {
 	mainWindow->showNormal();
 	mainWindow->activateWindow();
 	mainWindow->raise();
+
+	// Center to active screen
+	QRect rect = QApplication::desktop()->availableGeometry(mainWindow.data());
+	mainWindow->move(rect.center() - mainWindow->rect().center());
 
 	/// Auto-start a user-specified action
 	QString actionName = application.settings()->getString("autostartWithAction");

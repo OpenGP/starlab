@@ -17,7 +17,8 @@ void gui_render::load(){
     editRenderSettings = new QAction("Edit renderer settings...",this);
     editModelColor = new QAction("Change model color...",this);
     editBackgroundColor = new QAction("Change background color...",this);
-    clearRenderObjects = new QAction (tr("Clear render objects"), this);
+	toggleBackgroundEffect = new QAction("Toggle background effect",this);
+    clearRenderObjects = new QAction ("Clear render objects", this);
     clearRenderObjects->setToolTip("Removes all render objects from the scene. Render objects" \
                        "are typically used to visually debug the algorithms. "\
                        "This function allows you to clear them from the scene.");
@@ -65,6 +66,7 @@ void gui_render::update(){
     menu()->addAction(currentAsDefault);
     menu()->addAction(editModelColor);
     menu()->addAction(editBackgroundColor);
+	menu()->addAction(toggleBackgroundEffect);
     menu()->addSeparator();
     menu()->addActions(renderModeGroup->actions());
         
@@ -77,7 +79,8 @@ void gui_render::update(){
     connect(editRenderSettings, SIGNAL(triggered()), this, SLOT(trigger_editSettings()),Qt::UniqueConnection);
     connect(editModelColor, SIGNAL(triggered()), this, SLOT(trigger_editSelectedModelColor()), Qt::UniqueConnection);
     connect(editBackgroundColor, SIGNAL(triggered()), this, SLOT(trigger_editBackgroundColor()), Qt::UniqueConnection);
-    connect(clearRenderObjects, SIGNAL(triggered()), drawArea(), SLOT(clear()), Qt::UniqueConnection);    
+	connect(clearRenderObjects, SIGNAL(triggered()), drawArea(), SLOT(clear()), Qt::UniqueConnection);
+	connect(toggleBackgroundEffect, &QAction::triggered, [&](){ drawArea()->toggleBackgroundEffect(); drawArea()->updateGL(); });
 }
 
 void gui_render::triggerSetDefaultRenderer(){
@@ -145,7 +148,8 @@ void gui_render::trigger_editBackgroundColor(){
     qColorDialog->setCustomColor(0, QColor(255,255,255).rgb());
     qColorDialog->setCustomColor(1, QColor(208,212,240).rgb());
     qColorDialog->setCustomColor(2, QColor(50,50,60).rgb());
-    qColorDialog->setCustomColor(3, QColor(0,0,0).rgb());
+	qColorDialog->setCustomColor(3, QColor(0, 0, 0).rgb());
+	qColorDialog->setCustomColor(4, QColor(136, 157, 179).rgb());
     qColorDialog->show();
 }
 

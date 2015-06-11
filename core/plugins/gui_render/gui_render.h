@@ -27,6 +27,7 @@ public slots:
 private:
     QAction* editModelColor;
     QAction* editBackgroundColor;
+	QAction* toggleBackgroundEffect;
     QColorDialog* qColorDialog;  
     void instantiate_color_dialog();
 private slots:

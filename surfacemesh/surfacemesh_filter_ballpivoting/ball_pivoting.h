@@ -3,6 +3,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#pragma warning(disable:4267) // disable warnings on x64
+
 #include "NanoKdTree.h"
 #include "SurfaceMeshHelper.h"
 

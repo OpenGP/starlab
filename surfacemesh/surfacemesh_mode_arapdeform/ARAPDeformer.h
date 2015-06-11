@@ -4,6 +4,7 @@
 
 #include "SurfaceMeshHelper.h"
 
+#pragma warning(disable:4267) // disable Cholmod warnings on x64
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <Eigen/CholmodSupport>

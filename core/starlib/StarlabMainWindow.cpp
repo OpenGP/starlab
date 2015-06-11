@@ -51,7 +51,7 @@ MainWindow::MainWindow(Application* _application) :
         // QIcon icon;
         // icon.addPixmap(QPixmap(":images/___.png"));
         // setWindowIcon(icon);
-        setWindowTitle("Starlab v1.0 (alpha)");        
+        setWindowTitle("Starlab v1.1");        
     }
        
     /// Instantiate Menus (plugins will fill them in)
@@ -144,9 +144,6 @@ MainWindow::MainWindow(Application* _application) :
 
     /// Update the UI for the first time (e.g. load mode plugins into UI)
     update();
-
-    /// Delete MainWindow when it's closed    
-    this->setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 MainWindow::~MainWindow(){
@@ -181,7 +178,7 @@ QSize MainWindow::sizeHint() const{
     QRect geom = QApplication::desktop()->screenGeometry();
     int scrw = geom.width();
     int scrh = geom.height();   
-    return QSize(scrw/2,scrh/2);
+	return QSize(scrw * 0.75, scrh * 0.75);
 }
 
 void MainWindow::triggerFilterByName(QString name){

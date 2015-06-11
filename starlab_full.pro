@@ -5,12 +5,6 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 #-------------------------------------------------------------------------------
-#                               BASIC CHECKS
-#-------------------------------------------------------------------------------
-!exists(core):error(have you cloned starlab core in this folder?)
-!exists(surfacemesh):error(have you cloned surfacemesh in this folder?)
-
-#-------------------------------------------------------------------------------
 #                               STARLAB CORE
 #-------------------------------------------------------------------------------
 SUBDIRS += core
@@ -37,15 +31,16 @@ SUBDIRS += surfacemesh/surfacemesh_render_wireframe
 SUBDIRS += surfacemesh/surfacemesh_render_flatwire
 SUBDIRS += surfacemesh/surfacemesh_render_transparent
 #--- Filter Plugins [[ @TODO: FIX COMPILE ISSUES ]]
+SUBDIRS += surfacemesh/surfacemesh_filter_create
 SUBDIRS += surfacemesh/surfacemesh_filter_normalize
-SUBDIRS += surfacemesh/surfacemesh_filter_laplacian_smoothing
-SUBDIRS += surfacemesh/surfacemesh_filter_simplification
 SUBDIRS += surfacemesh/surfacemesh_filter_butterfly_subdivision
 SUBDIRS += surfacemesh/surfacemesh_filter_isotropic_remesher
+SUBDIRS += surfacemesh/surfacemesh_filter_laplacian_smoothing
+SUBDIRS += surfacemesh/surfacemesh_filter_simplification
 SUBDIRS += surfacemesh/surfacemesh_filter_geoheat
 SUBDIRS += surfacemesh/surfacemesh_filter_ballpivoting
 #SUBDIRS += surfacemesh/surfacemesh_filter_au_skeleton
-SUBDIRS += surfacemesh/filter_depthscanner
+#SUBDIRS += surfacemesh/filter_depthscanner
 #--- Mode Plugins
 SUBDIRS += surfacemesh/surfacemesh_mode_info
 SUBDIRS += surfacemesh/surfacemesh_mode_arapdeform

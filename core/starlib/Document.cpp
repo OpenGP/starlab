@@ -149,9 +149,12 @@ void Document::lower_layer(Model *model){
 void Document::emit_resetViewport(){ 
     emit resetViewport(); 
 }
-void Document::emit_hasChanged(){ 
+void Document::emit_hasChanged(){
     // qDebug() << Q_FUNC_INFO;
     // qDebug() << __FUNCTION__ << __LINE__ << __FILE__;
+
+	if (_models.isEmpty()) return; // Skip any updates if there are no models
+
     if(!isBusy()) 
         emit hasChanged(); 
     else
