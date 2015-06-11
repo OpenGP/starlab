@@ -192,6 +192,11 @@ defineTest(StarlabTemplate){
         DEFINES *= NOMINMAX
     }
 
+    # GCC C++11
+    linux-g++{
+        CONFIG += c++11
+    }
+
     # @internal because we are inside a function we need to "export" variables
     export(QMAKE_CXXFLAGS)
     export(QMAKE_LFLAGS)
