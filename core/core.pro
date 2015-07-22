@@ -12,7 +12,7 @@ OTHER_FILES += mainpage.h
 
 #--- SPECIFIES CORE CONFIGURATION
 system(qmake -set STARLAB       $$PWD/starlab.prf)
-system(qmake -set EIGENPATH     $$PWD/external/eigen-3.2.1)
+system(qmake -set EIGENPATH     $$PWD/external/eigen-3.2.5)
 system(qmake -set CHOLMOD       $$PWD/external/cholmod-4.0.0/cholmod.prf)
 system(qmake -set QHULL         $$PWD/external/qhull-2012.1/qhull.prf)
 system(qmake -set CGAL          $$PWD/external/cgal-4.2/cgal.prf)
