@@ -190,6 +190,9 @@ defineTest(StarlabTemplate){
     win32{
         DEFINES *= _CRT_SECURE_NO_WARNINGS
         DEFINES *= NOMINMAX
+
+        # Eigen 3.2.5 introduced some new warnings
+        QMAKE_CXXFLAGS *= /wd4522
     }
 
     # GCC C++11
