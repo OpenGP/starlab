@@ -653,7 +653,7 @@ void QGLViewer::saveSnapshot(bool automatic, bool overwrite)
       QString selectedFormat = FDFormatString[snapshotFormat()];
 # if QT_VERSION >= 0x040000
       fileName = QFileDialog::getSaveFileName(this, "Choose a file name to save under", snapshotFileName(), formats, &selectedFormat,
-					      overwrite?QFileDialog::DontConfirmOverwrite:QFlag(0));
+                          overwrite ? QFileDialog::DontConfirmOverwrite : QFileDialog::DontUseSheet);
 # else
       fileName = QFileDialog::getSaveFileName(snapshotFileName(), formats, this,
 					      "Save Snapshot dialog", "Choose a file name to save under", &selectedFormat);
