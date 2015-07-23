@@ -5,7 +5,10 @@ unix:!mac: LIBS += -lGLU
 DEPENDPATH  += qglviewer
 INCLUDEPATH += qglviewer
 
-win32:DEFINES += CREATE_QGLVIEWER_DLL
+win32{
+    DEFINES += CREATE_QGLVIEWER_DLL
+    DEFINES += NOMINMAX
+}
 
 # because we are not including vectorial headers
 DEFINES += NO_VECTORIAL_RENDER

@@ -115,7 +115,11 @@ defineTest(StarlabTemplate){
 
     QT*=xml opengl widgets
 
-    # LOADS EIGEN (NOT ELEGANT... WHY NOT AS QGLVIEWER?)
+    # Use native OpenGL drivers with Qt5.5
+    # No longer implicit since the ANGLE driver is now an alternative
+    win32:LIBS += -lopengl32 -lglu32
+
+    # LOADS EIGEN
     INCLUDEPATH *= $$[EIGENPATH]
     DEFINES *= EIGEN
 

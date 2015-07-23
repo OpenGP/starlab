@@ -9,6 +9,8 @@
 #include "ModePlugin.h"
 #include "DecoratePlugin.h"
 
+#include "manipulatedCameraFrame.h"
+
 using namespace Starlab;
 using namespace qglviewer;
 
