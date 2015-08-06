@@ -409,6 +409,19 @@ void DrawArea::mouseDoubleClickEvent(QMouseEvent *e)
 #endif
 }
 
+void DrawArea::wheelEvent(QWheelEvent *e)
+{
+    QGLViewer::wheelEvent(e);
+
+    if(e->modifiers().testFlag(Qt::ShiftModifier))
+    {
+        double step = (double)e->delta() / 120;
+        double stepSize = 0.02;
+        camera()->setFieldOfView(camera()->fieldOfView() + (step * stepSize));
+        updateGL();
+    }
+}
+
 void DrawArea::deleteRenderObject(RenderObject* /*object*/){
     /// @todo 
     throw StarlabException("TODO: StarlabDrawArea::deleteRenderObject");

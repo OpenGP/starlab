@@ -87,6 +87,7 @@ private:
 
 /// @{ Default mouse & keyboard management
     void mouseDoubleClickEvent( QMouseEvent * e );
+    void wheelEvent( QWheelEvent * e );
 /// @}
         
 /// @{ Scene-wide rendering elements (i.e. used for debug)
