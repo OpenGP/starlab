@@ -20,15 +20,23 @@ void gui_filter::load(){
         QMenu * assignedMenu = mainWindow()->filterMenu;
 
         // Check for categories
-        if(pluginName.contains("|")){
+        if(pluginName.contains("|"))
+        {
+            // Split by delimiter, filter category then filter name
             QStringList pluginNames = pluginName.split("|");
-
-            action->setText( pluginNames.back() );
+            action->setText( pluginNames.back().trimmed() );
+            QString catName = pluginNames.front().trimmed();
 
             // Try to locate exciting submenu
-            QString catName = pluginNames.front();
-            QMenu * m = assignedMenu->findChild<QMenu*>( catName );
-            if(!m) m = mainWindow()->filterMenu->addMenu(catName);
+            QMenu * m = nullptr;
+            for(QMenu * child : assignedMenu->findChildren<QMenu*>()){
+                QString menuName = child->title();
+                if(menuName == catName){
+                    m = child;
+                    break;
+                }
+            }
+            if(m == nullptr) m = mainWindow()->filterMenu->addMenu(catName);
 
             assignedMenu = m;
         }
