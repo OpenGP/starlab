@@ -35,7 +35,7 @@ public:
         mesh->remove_vertex_property(temp);
     }
     
-    void escalar_to_ecolor( char* property="e:quality"){
+    void escalar_to_ecolor(const std::string property="e:quality"){
         Surface_mesh::Edge_property<Scalar> escalar = mesh->get_edge_property<Scalar>(property);
         Surface_mesh::Edge_property<Color>  ecolor   = mesh->edge_property<Color>("e:color",Color(0,0,0));
         

@@ -33,7 +33,7 @@ Surface_mesh()
     vconn_    = add_vertex_property<Vertex_connectivity>("v:connectivity");
     hconn_    = add_halfedge_property<Halfedge_connectivity>("h:connectivity");
     fconn_    = add_face_property<Face_connectivity>("f:connectivity");
-    vpoint_   = add_vertex_property<Point>("v:point");
+    vpoint_   = add_vertex_property<Point>("v:point", Point(0,0,0));
     vdeleted_ = add_vertex_property<bool>("v:deleted", false);
     edeleted_ = add_edge_property<bool>("e:deleted", false);
     fdeleted_ = add_face_property<bool>("f:deleted", false);
