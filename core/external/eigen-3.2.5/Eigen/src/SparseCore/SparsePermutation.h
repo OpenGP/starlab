@@ -16,131 +16,151 @@ namespace Eigen {
 
 namespace internal {
 
-template<typename PermutationType, typename MatrixType, int Side, bool Transposed>
-struct traits<permut_sparsematrix_product_retval<PermutationType, MatrixType, Side, Transposed> >
-{
-  typedef typename remove_all<typename MatrixType::Nested>::type MatrixTypeNestedCleaned;
-  typedef typename MatrixTypeNestedCleaned::Scalar Scalar;
-  typedef typename MatrixTypeNestedCleaned::Index Index;
-  enum {
-    SrcStorageOrder = MatrixTypeNestedCleaned::Flags&RowMajorBit ? RowMajor : ColMajor,
-    MoveOuter = SrcStorageOrder==RowMajor ? Side==OnTheLeft : Side==OnTheRight
-  };
-
-  typedef typename internal::conditional<MoveOuter,
-        SparseMatrix<Scalar,SrcStorageOrder,Index>,
-        SparseMatrix<Scalar,int(SrcStorageOrder)==RowMajor?ColMajor:RowMajor,Index> >::type ReturnType;
-};
-
-template<typename PermutationType, typename MatrixType, int Side, bool Transposed>
-struct permut_sparsematrix_product_retval
- : public ReturnByValue<permut_sparsematrix_product_retval<PermutationType, MatrixType, Side, Transposed> >
+template<typename MatrixType, int Side, bool Transposed>
+struct permutation_matrix_product<MatrixType, Side, Transposed, SparseShape>
 {
     typedef typename remove_all<typename MatrixType::Nested>::type MatrixTypeNestedCleaned;
     typedef typename MatrixTypeNestedCleaned::Scalar Scalar;
-    typedef typename MatrixTypeNestedCleaned::Index Index;
+    typedef typename MatrixTypeNestedCleaned::StorageIndex StorageIndex;
 
     enum {
       SrcStorageOrder = MatrixTypeNestedCleaned::Flags&RowMajorBit ? RowMajor : ColMajor,
       MoveOuter = SrcStorageOrder==RowMajor ? Side==OnTheLeft : Side==OnTheRight
     };
+    
+    typedef typename internal::conditional<MoveOuter,
+        SparseMatrix<Scalar,SrcStorageOrder,StorageIndex>,
+        SparseMatrix<Scalar,int(SrcStorageOrder)==RowMajor?ColMajor:RowMajor,StorageIndex> >::type ReturnType;
 
-    permut_sparsematrix_product_retval(const PermutationType& perm, const MatrixType& matrix)
-      : m_permutation(perm), m_matrix(matrix)
-    {}
-
-    inline int rows() const { return m_matrix.rows(); }
-    inline int cols() const { return m_matrix.cols(); }
-
-    template<typename Dest> inline void evalTo(Dest& dst) const
+    template<typename Dest,typename PermutationType>
+    static inline void run(Dest& dst, const PermutationType& perm, const MatrixType& mat)
     {
       if(MoveOuter)
       {
-        SparseMatrix<Scalar,SrcStorageOrder,Index> tmp(m_matrix.rows(), m_matrix.cols());
-        Matrix<Index,Dynamic,1> sizes(m_matrix.outerSize());
-        for(Index j=0; j<m_matrix.outerSize(); ++j)
+        SparseMatrix<Scalar,SrcStorageOrder,StorageIndex> tmp(mat.rows(), mat.cols());
+        Matrix<StorageIndex,Dynamic,1> sizes(mat.outerSize());
+        for(Index j=0; j<mat.outerSize(); ++j)
         {
-          Index jp = m_permutation.indices().coeff(j);
-          sizes[((Side==OnTheLeft) ^ Transposed) ? jp : j] = m_matrix.innerVector(((Side==OnTheRight) ^ Transposed) ? jp : j).nonZeros();
+          Index jp = perm.indices().coeff(j);
+          sizes[((Side==OnTheLeft) ^ Transposed) ? jp : j] = StorageIndex(mat.innerVector(((Side==OnTheRight) ^ Transposed) ? jp : j).nonZeros());
         }
         tmp.reserve(sizes);
-        for(Index j=0; j<m_matrix.outerSize(); ++j)
+        for(Index j=0; j<mat.outerSize(); ++j)
         {
-          Index jp = m_permutation.indices().coeff(j);
+          Index jp = perm.indices().coeff(j);
           Index jsrc = ((Side==OnTheRight) ^ Transposed) ? jp : j;
           Index jdst = ((Side==OnTheLeft) ^ Transposed) ? jp : j;
-          for(typename MatrixTypeNestedCleaned::InnerIterator it(m_matrix,jsrc); it; ++it)
+          for(typename MatrixTypeNestedCleaned::InnerIterator it(mat,jsrc); it; ++it)
             tmp.insertByOuterInner(jdst,it.index()) = it.value();
         }
         dst = tmp;
       }
       else
       {
-        SparseMatrix<Scalar,int(SrcStorageOrder)==RowMajor?ColMajor:RowMajor,Index> tmp(m_matrix.rows(), m_matrix.cols());
-        Matrix<Index,Dynamic,1> sizes(tmp.outerSize());
+        SparseMatrix<Scalar,int(SrcStorageOrder)==RowMajor?ColMajor:RowMajor,StorageIndex> tmp(mat.rows(), mat.cols());
+        Matrix<StorageIndex,Dynamic,1> sizes(tmp.outerSize());
         sizes.setZero();
-        PermutationMatrix<Dynamic,Dynamic,Index> perm;
+        PermutationMatrix<Dynamic,Dynamic,StorageIndex> perm_cpy;
         if((Side==OnTheLeft) ^ Transposed)
-          perm = m_permutation;
+          perm_cpy = perm;
         else
-          perm = m_permutation.transpose();
+          perm_cpy = perm.transpose();
 
-        for(Index j=0; j<m_matrix.outerSize(); ++j)
-          for(typename MatrixTypeNestedCleaned::InnerIterator it(m_matrix,j); it; ++it)
-            sizes[perm.indices().coeff(it.index())]++;
+        for(Index j=0; j<mat.outerSize(); ++j)
+          for(typename MatrixTypeNestedCleaned::InnerIterator it(mat,j); it; ++it)
+            sizes[perm_cpy.indices().coeff(it.index())]++;
         tmp.reserve(sizes);
-        for(Index j=0; j<m_matrix.outerSize(); ++j)
-          for(typename MatrixTypeNestedCleaned::InnerIterator it(m_matrix,j); it; ++it)
-            tmp.insertByOuterInner(perm.indices().coeff(it.index()),j) = it.value();
+        for(Index j=0; j<mat.outerSize(); ++j)
+          for(typename MatrixTypeNestedCleaned::InnerIterator it(mat,j); it; ++it)
+            tmp.insertByOuterInner(perm_cpy.indices().coeff(it.index()),j) = it.value();
         dst = tmp;
       }
     }
-
-  protected:
-    const PermutationType& m_permutation;
-    typename MatrixType::Nested m_matrix;
 };
 
 }
 
+namespace internal {
 
+template <int ProductTag> struct product_promote_storage_type<Sparse,             PermutationStorage, ProductTag> { typedef Sparse ret; };
+template <int ProductTag> struct product_promote_storage_type<PermutationStorage, Sparse,             ProductTag> { typedef Sparse ret; };
+
+// TODO, the following two overloads are only needed to define the right temporary type through 
+// typename traits<permutation_sparse_matrix_product<Rhs,Lhs,OnTheRight,false> >::ReturnType
+// whereas it should be correctly handled by traits<Product<> >::PlainObject
+
+template<typename Lhs, typename Rhs, int ProductTag>
+struct product_evaluator<Product<Lhs, Rhs, AliasFreeProduct>, ProductTag, PermutationShape, SparseShape, typename traits<Lhs>::Scalar, typename traits<Rhs>::Scalar> 
+  : public evaluator<typename permutation_matrix_product<Rhs,OnTheRight,false,SparseShape>::ReturnType>::type
+{
+  typedef Product<Lhs, Rhs, AliasFreeProduct> XprType;
+  typedef typename permutation_matrix_product<Rhs,OnTheRight,false,SparseShape>::ReturnType PlainObject;
+  typedef typename evaluator<PlainObject>::type Base;
+
+  explicit product_evaluator(const XprType& xpr)
+    : m_result(xpr.rows(), xpr.cols())
+  {
+    ::new (static_cast<Base*>(this)) Base(m_result);
+    generic_product_impl<Lhs, Rhs, PermutationShape, SparseShape, ProductTag>::evalTo(m_result, xpr.lhs(), xpr.rhs());
+  }
+  
+protected:  
+  PlainObject m_result;
+};
+
+template<typename Lhs, typename Rhs, int ProductTag>
+struct product_evaluator<Product<Lhs, Rhs, AliasFreeProduct>, ProductTag, SparseShape, PermutationShape, typename traits<Lhs>::Scalar, typename traits<Rhs>::Scalar> 
+  : public evaluator<typename permutation_matrix_product<Lhs,OnTheRight,false,SparseShape>::ReturnType>::type
+{
+  typedef Product<Lhs, Rhs, AliasFreeProduct> XprType;
+  typedef typename permutation_matrix_product<Lhs,OnTheRight,false,SparseShape>::ReturnType PlainObject;
+  typedef typename evaluator<PlainObject>::type Base;
+
+  explicit product_evaluator(const XprType& xpr)
+    : m_result(xpr.rows(), xpr.cols())
+  {
+    ::new (static_cast<Base*>(this)) Base(m_result);
+    generic_product_impl<Lhs, Rhs, SparseShape, PermutationShape, ProductTag>::evalTo(m_result, xpr.lhs(), xpr.rhs());
+  }
+  
+protected:  
+  PlainObject m_result;
+};
+
+} // end namespace internal
 
 /** \returns the matrix with the permutation applied to the columns
   */
 template<typename SparseDerived, typename PermDerived>
-inline const internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheRight, false>
+inline const Product<SparseDerived, PermDerived>
 operator*(const SparseMatrixBase<SparseDerived>& matrix, const PermutationBase<PermDerived>& perm)
-{
-  return internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheRight, false>(perm, matrix.derived());
-}
+{ return Product<SparseDerived, PermDerived>(matrix.derived(), perm.derived()); }
 
 /** \returns the matrix with the permutation applied to the rows
   */
 template<typename SparseDerived, typename PermDerived>
-inline const internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheLeft, false>
+inline const Product<PermDerived, SparseDerived>
 operator*( const PermutationBase<PermDerived>& perm, const SparseMatrixBase<SparseDerived>& matrix)
-{
-  return internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheLeft, false>(perm, matrix.derived());
-}
+{ return  Product<PermDerived, SparseDerived>(perm.derived(), matrix.derived()); }
 
 
-
+// TODO, the following specializations should not be needed as Transpose<Permutation*> should be a PermutationBase.
 /** \returns the matrix with the inverse permutation applied to the columns.
   */
 template<typename SparseDerived, typename PermDerived>
-inline const internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheRight, true>
+inline const Product<SparseDerived, Transpose<PermutationBase<PermDerived> > >
 operator*(const SparseMatrixBase<SparseDerived>& matrix, const Transpose<PermutationBase<PermDerived> >& tperm)
 {
-  return internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheRight, true>(tperm.nestedPermutation(), matrix.derived());
+  return Product<SparseDerived, Transpose<PermutationBase<PermDerived> > >(matrix.derived(), tperm);
 }
 
 /** \returns the matrix with the inverse permutation applied to the rows.
   */
 template<typename SparseDerived, typename PermDerived>
-inline const internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheLeft, true>
+inline const Product<Transpose<PermutationBase<PermDerived> >, SparseDerived>
 operator*(const Transpose<PermutationBase<PermDerived> >& tperm, const SparseMatrixBase<SparseDerived>& matrix)
 {
-  return internal::permut_sparsematrix_product_retval<PermutationBase<PermDerived>, SparseDerived, OnTheLeft, true>(tperm.nestedPermutation(), matrix.derived());
+  return Product<Transpose<PermutationBase<PermDerived> >, SparseDerived>(tperm, matrix.derived());
 }
 
 } // end namespace Eigen

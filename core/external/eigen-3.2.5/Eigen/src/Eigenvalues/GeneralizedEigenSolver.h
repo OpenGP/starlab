@@ -72,7 +72,7 @@ template<typename _MatrixType> class GeneralizedEigenSolver
     /** \brief Scalar type for matrices of type #MatrixType. */
     typedef typename MatrixType::Scalar Scalar;
     typedef typename NumTraits<Scalar>::Real RealScalar;
-    typedef typename MatrixType::Index Index;
+    typedef Eigen::Index Index; ///< \deprecated since Eigen 3.3
 
     /** \brief Complex scalar type for #MatrixType. 
       *
@@ -122,7 +122,7 @@ template<typename _MatrixType> class GeneralizedEigenSolver
       * according to the specified problem \a size.
       * \sa GeneralizedEigenSolver()
       */
-    GeneralizedEigenSolver(Index size)
+    explicit GeneralizedEigenSolver(Index size)
       : m_eivec(size, size),
         m_alphas(size),
         m_betas(size),
@@ -145,7 +145,7 @@ template<typename _MatrixType> class GeneralizedEigenSolver
       *
       * \sa compute()
       */
-    GeneralizedEigenSolver(const MatrixType& A, const MatrixType& B, bool computeEigenvectors = true)
+    explicit GeneralizedEigenSolver(const MatrixType& A, const MatrixType& B, bool computeEigenvectors = true)
       : m_eivec(A.rows(), A.cols()),
         m_alphas(A.cols()),
         m_betas(A.cols()),

@@ -64,7 +64,7 @@ template<typename _MatrixType> class RealSchur
     };
     typedef typename MatrixType::Scalar Scalar;
     typedef std::complex<typename NumTraits<Scalar>::Real> ComplexScalar;
-    typedef typename MatrixType::Index Index;
+    typedef Eigen::Index Index; ///< \deprecated since Eigen 3.3
 
     typedef Matrix<ComplexScalar, ColsAtCompileTime, 1, Options & ~RowMajor, MaxColsAtCompileTime, 1> EigenvalueType;
     typedef Matrix<Scalar, ColsAtCompileTime, 1, Options & ~RowMajor, MaxColsAtCompileTime, 1> ColumnVectorType;
@@ -80,7 +80,7 @@ template<typename _MatrixType> class RealSchur
       *
       * \sa compute() for an example.
       */
-    RealSchur(Index size = RowsAtCompileTime==Dynamic ? 1 : RowsAtCompileTime)
+    explicit RealSchur(Index size = RowsAtCompileTime==Dynamic ? 1 : RowsAtCompileTime)
             : m_matT(size, size),
               m_matU(size, size),
               m_workspaceVector(size),
@@ -100,7 +100,7 @@ template<typename _MatrixType> class RealSchur
       * Example: \include RealSchur_RealSchur_MatrixType.cpp
       * Output: \verbinclude RealSchur_RealSchur_MatrixType.out
       */
-    RealSchur(const MatrixType& matrix, bool computeU = true)
+    explicit RealSchur(const MatrixType& matrix, bool computeU = true)
             : m_matT(matrix.rows(),matrix.cols()),
               m_matU(matrix.rows(),matrix.cols()),
               m_workspaceVector(matrix.rows()),
@@ -343,7 +343,7 @@ inline typename MatrixType::Scalar RealSchur<MatrixType>::computeNormOfT()
 
 /** \internal Look for single small sub-diagonal element and returns its index */
 template<typename MatrixType>
-inline typename MatrixType::Index RealSchur<MatrixType>::findSmallSubdiagEntry(Index iu)
+inline Index RealSchur<MatrixType>::findSmallSubdiagEntry(Index iu)
 {
   using std::abs;
   Index res = iu;

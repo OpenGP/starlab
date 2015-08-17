@@ -63,7 +63,7 @@ template<typename _MatrixType> class ComplexSchur
     /** \brief Scalar type for matrices of type \p _MatrixType. */
     typedef typename MatrixType::Scalar Scalar;
     typedef typename NumTraits<Scalar>::Real RealScalar;
-    typedef typename MatrixType::Index Index;
+    typedef Eigen::Index Index; ///< \deprecated since Eigen 3.3
 
     /** \brief Complex scalar type for \p _MatrixType. 
       *
@@ -91,7 +91,7 @@ template<typename _MatrixType> class ComplexSchur
       *
       * \sa compute() for an example.
       */
-    ComplexSchur(Index size = RowsAtCompileTime==Dynamic ? 1 : RowsAtCompileTime)
+    explicit ComplexSchur(Index size = RowsAtCompileTime==Dynamic ? 1 : RowsAtCompileTime)
       : m_matT(size,size),
         m_matU(size,size),
         m_hess(size),
@@ -109,7 +109,7 @@ template<typename _MatrixType> class ComplexSchur
       *
       * \sa matrixT() and matrixU() for examples.
       */
-    ComplexSchur(const MatrixType& matrix, bool computeU = true)
+    explicit ComplexSchur(const MatrixType& matrix, bool computeU = true)
       : m_matT(matrix.rows(),matrix.cols()),
         m_matU(matrix.rows(),matrix.cols()),
         m_hess(matrix.rows()),
