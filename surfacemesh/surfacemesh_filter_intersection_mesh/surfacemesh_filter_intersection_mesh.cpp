@@ -60,5 +60,7 @@ void surfacemesh_filter_intersection_mesh::applyFilter(RichParameterSet*)
             drawArea()->drawTriangle(vp[0], vp[1], vp[2], i == 0 ? Qt::blue : Qt::green);
         }
     }
+
+    qDebug() << QString("Distance between meshes = %1").arg(isects_pairs.front().distance);
 }
 

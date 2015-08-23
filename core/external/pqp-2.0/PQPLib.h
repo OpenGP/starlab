@@ -77,13 +77,7 @@ struct Manager{
         for(int i = 0; i < collisions.num_pairs; i++)
         {
             auto & pair = collisions.pairs[i];
-
-            getTriangle( &m1.tris[pair.id1], t1 );
-            getTriangle( &m2.tris[pair.id2], t2 );
-
-            double distance = isect_tri.TriDist(p, q, t1, t2);
-
-            results.push_back( IntersectResult( pair.id1, pair.id2, p, q, distance ) );
+            results.push_back( IntersectResult( pair.id1, pair.id2, p, q, 0.0 ) );
         }
 
         // If no collisions detected return closest points
