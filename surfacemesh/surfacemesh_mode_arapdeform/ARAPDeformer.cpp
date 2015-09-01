@@ -197,7 +197,10 @@ void ARAPDeformer::Deform( int ARAPIteration /*= 1*/ )
 
 		// SOLVE for x, y, and z
 		for(int k = 0; k < 3; k++)
-			xyz[k] = solver.solve(At * b[k]);
+        {
+            Eigen::MatrixXd Atb = At * b[k];
+            xyz[k] = solver.solve(Atb);
+        }
 
 		// if iter = 0, just means naive Laplacian Surface Editing (Ri is identity matrix)
         if(iter > 0) SVDRotation();
