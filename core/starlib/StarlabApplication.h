@@ -30,6 +30,7 @@ public:
         bool loadModel(QString path, InputOutputPlugin* plugin=NULL);
         bool saveModel(Model* model, QString path="");
         bool loadProject(QString path, ProjectInputOutputPlugin* plugin=NULL);
+        bool loadByDrop(QString path, ModePlugin* plugin = NULL);
     /// @}
 
     /// @{ filters frontend

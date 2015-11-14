@@ -208,7 +208,19 @@ bool PluginManager::load_GuiPlugin(QObject* _plugin){
 bool PluginManager::load_EditPlugin(QObject* _plugin){
     ModePlugin* plugin = qobject_cast<ModePlugin*>(_plugin);
     if(!plugin) return false;
-    _modePlugins.insert(plugin->name(), plugin);    
+    _modePlugins.insert(plugin->name(), plugin);
+
+    /// Parse the extension filter into extensions
+    QString filter = plugin->filter();
+    if (!filter.isEmpty())
+    {
+        QStringList exts = extractExtensions(filter);
+        foreach(QString ext, exts)
+        {
+            modeExtensionToPlugin.insert(ext, plugin);
+        }
+    }
+
     return true;
 }
  

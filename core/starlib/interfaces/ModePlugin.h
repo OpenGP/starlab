@@ -61,6 +61,12 @@ public:
     virtual void resume(){}
 /// @}
 
+/// @{ @name Loading by drop (optional)
+    /// Filtering files with specified suffix when loading by drop
+    virtual QString filter() { return QString(); }
+    virtual bool loadByDrop(QString) { return false; }
+/// }
+
 /// @{ @name Rendering events (optional)
 public: 
     /// Overload this method to draw *additionally* to the system renderer

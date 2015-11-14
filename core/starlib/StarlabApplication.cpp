@@ -2,6 +2,8 @@
 #include "FilterPlugin.h"
 #include "parameters/RichParameterSet.h"
 
+#include "ModePlugin.h"
+
 using namespace Starlab;
 
 Application::Application(){
@@ -110,6 +112,40 @@ bool Application::loadProject(QString path, ProjectInputOutputPlugin* plugin){
     return true;
 }
 
+bool Application::loadByDrop(QString path, ModePlugin *plugin)
+{
+    QFileInfo fileInfo(path);
+    QString extension = fileInfo.suffix().toLower();
+    QString basename = fileInfo.completeBaseName();
+
+    if (plugin == NULL)
+    {
+        plugin = pluginManager()->modeExtensionToPlugin[extension];
+        if (plugin == NULL)
+            return false;
+    }
+
+    /// Checks a suitable plugin exists
+    ModePlugin* mIO = pluginManager()->modeExtensionToPlugin[extension];
+
+    /// Checks file existence
+    if(mIO == NULL)            throw StarlabException("File '%s' has not been opened, format %s not supported", qPrintable(basename), qPrintable(extension));
+    if(!fileInfo.exists())     throw StarlabException("File '%s' does not exist", qPrintable(path));
+    if(!fileInfo.isReadable()) throw StarlabException("File '%s' is not readable", qPrintable(path));
+
+    /// Clear the doc and use plugin to fill in
+    document()->pushBusy();
+        /// load by drop here
+        bool isLoaded = mIO->loadByDrop(path);
+        if (!isLoaded) throw StarlabException("Loading by drop fails, unsupported file format");
+    document()->popBusy();
+
+    /// Refresh visualization
+    // document()->emit_resetViewport();
+
+    return true;
+}
+
 QList<FilterPlugin*> Application::applicableFilters(){
     return pluginManager()->filterPlugins();
 }
@@ -127,6 +163,7 @@ void Application::load(QString path){
     bool retstatus = false;
     if(!retstatus) retstatus = loadModel(path,NULL);
     if(!retstatus) retstatus = loadProject(path,NULL);
+    if(!retstatus) retstatus = loadByDrop(path, NULL);
     
     /// Nothing was able to open
     if(!retstatus)
