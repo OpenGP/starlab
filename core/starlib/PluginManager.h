@@ -66,6 +66,9 @@ public:
     /// Extension (lowercase) => IO project plugin
     QHash<QString,ProjectInputOutputPlugin*> projectExtensionToPlugin;
 
+    /// Stores the loaded IO files by drop
+    QHash<QString, ModePlugin*> modeExtensionToPlugin;
+
 
 
 
